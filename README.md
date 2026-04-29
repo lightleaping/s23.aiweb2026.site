@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 9주차 — 데모 소개 페이지 템플릿 (`week09_demo_intro`)
 
 > 본인 프로젝트(예: 6주차 칼로리카운터, 또는 본인이 만든 다른 프로젝트)를 소개하는 정적 1페이지 사이트.
@@ -142,3 +143,6 @@
 - 본 템플릿: `00_for_me/src/week09_demo_intro/`
 - 9주차 강의안: `00_for_me/docs/09_week09.html`
 - 분배표: `00_for_me/docs/student_subdomain_assignments.md`
+=======
+# s23.aiweb2026.site
+>>>>>>> 897970813885770c55a2a7ae48685ed49d715d5c
