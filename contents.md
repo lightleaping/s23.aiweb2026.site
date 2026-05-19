@@ -76,7 +76,6 @@
 - **모델 / API**: OpenAI API 또는 GPT 계열 LLM API
 - **검색 방식**: 의결서 chunk 기반 Hybrid Retrieval
 - **외부 서비스**: 없음
-- **배포**: OCI 서버 + Nginx
 
 ---
 
