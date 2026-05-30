@@ -58,8 +58,6 @@ Local Document Organizer Agent는 TXT, Markdown, PDF 문서를 업로드하면 �
 분석 결과는 Markdown 리포트로 자동 정리되며, Streamlit 화면에서 미리보기와 다운로드가 가능합니다.  
 로컬 LLM 요약 옵션을 사용한 경우에도 동일한 리포트 구조로 결과가 정리됩니다.
 
-![Markdown report result](docs/images/document_analysis_result.png)
-
 ---
 
 ## 3. Key Features
