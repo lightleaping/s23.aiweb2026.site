@@ -1,14 +1,3 @@
-# Local Document Organizer Agent
-
-> AI 기반 로컬 문서 정리 웹 애플리케이션 — by sj
-
-TXT, Markdown, PDF 문서를 업로드하면 AI가 문서 유형을 분류하고, 핵심 키워드와 요약, 추천 파일명, 중복 후보를 생성해 주는 문서 정리 보조 도구입니다.
-
-[▶ 실행하기](https://s23-demo.aiweb2026.site/)
-[⌨ GitHub에서 소스 보기](https://github.com/lightleaping/local-document-organizer-agent)
-
----
-
 ## 프로젝트 소개
 
 **Local Document Organizer Agent**는 사용자가 보유한 문서를 더 쉽게 정리할 수 있도록 만든 AI 기반 문서 관리 도구입니다.
