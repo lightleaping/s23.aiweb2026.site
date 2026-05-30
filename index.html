@@ -6,31 +6,22 @@
   <title>Local Document Organizer Agent</title>
   <style>
     :root {
-      --bg: #f5f7fb;
-      --surface: #ffffff;
-      --surface-soft: #f8fafc;
+      --bg: #f6f7fb;
+      --card: #ffffff;
       --text: #111827;
-      --muted: #64748b;
+      --muted: #667085;
       --line: #e5e7eb;
       --primary: #2563eb;
       --primary-dark: #1d4ed8;
-      --primary-soft: #dbeafe;
-      --green-soft: #dcfce7;
-      --green-text: #166534;
-      --purple-soft: #f3e8ff;
-      --purple-text: #6b21a8;
+      --soft-blue: #eff6ff;
+      --soft-green: #ecfdf3;
+      --soft-purple: #f5f3ff;
       --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
-      --radius-xl: 28px;
-      --radius-lg: 20px;
-      --radius-md: 14px;
+      --radius: 24px;
     }
 
     * {
       box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
     }
 
     body {
@@ -39,7 +30,7 @@
       color: var(--text);
       background:
         radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 34%),
-        radial-gradient(circle at top right, rgba(147, 51, 234, 0.10), transparent 32%),
+        radial-gradient(circle at top right, rgba(124, 58, 237, 0.10), transparent 34%),
         var(--bg);
       line-height: 1.65;
     }
@@ -51,15 +42,17 @@
     .wrap {
       width: min(1120px, calc(100% - 36px));
       margin: 0 auto;
+      padding: 22px 0 52px;
     }
 
-    .topbar {
+    .top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 22px 0 14px;
+      gap: 16px;
       color: var(--muted);
       font-size: 14px;
+      margin-bottom: 18px;
     }
 
     .brand {
@@ -70,45 +63,49 @@
       color: var(--text);
     }
 
-    .brand-mark {
+    .brand-icon {
       width: 34px;
       height: 34px;
+      border-radius: 12px;
       display: grid;
       place-items: center;
-      border-radius: 12px;
       background: var(--primary);
-      color: #fff;
-      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+      color: white;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
     }
 
     .hero {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 0.95fr 1.05fr;
       gap: 24px;
       align-items: stretch;
-      margin-top: 12px;
+      margin-bottom: 24px;
     }
 
-    .hero-main,
-    .hero-preview {
-      background: rgba(255, 255, 255, 0.86);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      border-radius: var(--radius-xl);
+    .hero-text,
+    .hero-image {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-radius: 30px;
       box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
-    .hero-main {
+    .hero-text {
       padding: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
-    .eyebrow {
+    .tag {
+      width: fit-content;
       display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 7px 12px;
       border-radius: 999px;
-      background: var(--primary-soft);
+      background: var(--soft-blue);
       color: var(--primary-dark);
       font-size: 13px;
       font-weight: 800;
@@ -117,16 +114,15 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(36px, 5vw, 60px);
+      font-size: clamp(34px, 5vw, 58px);
       line-height: 1.05;
       letter-spacing: -0.055em;
     }
 
     .lead {
       margin: 20px 0 0;
-      max-width: 680px;
       color: var(--muted);
-      font-size: 19px;
+      font-size: 18px;
       word-break: keep-all;
     }
 
@@ -139,183 +135,119 @@
 
     .btn {
       display: inline-flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       min-height: 48px;
-      padding: 0 19px;
+      padding: 0 18px;
       border-radius: 15px;
       border: 1px solid var(--line);
       background: #fff;
-      color: var(--text);
       text-decoration: none;
       font-weight: 800;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
       transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
     }
 
     .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.13);
     }
 
     .btn.primary {
       background: var(--primary);
       border-color: var(--primary);
-      color: white;
+      color: #fff;
     }
 
     .btn.primary:hover {
       background: var(--primary-dark);
     }
 
-    .meta-row {
+    .mini-meta {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       margin-top: 30px;
     }
 
-    .meta {
+    .mini-meta div {
       padding: 14px;
       border-radius: 16px;
-      background: var(--surface-soft);
+      background: #f8fafc;
       border: 1px solid var(--line);
     }
 
-    .meta strong {
+    .mini-meta strong {
       display: block;
-      font-size: 15px;
+      font-size: 14px;
       margin-bottom: 2px;
     }
 
-    .meta span {
+    .mini-meta span {
       color: var(--muted);
       font-size: 13px;
     }
 
-    .hero-preview {
-      padding: 24px;
+    .hero-image {
+      padding: 18px;
       display: flex;
-      flex-direction: column;
-      gap: 16px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-preview::before {
-      content: "";
-      position: absolute;
-      inset: -80px -80px auto auto;
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      background: rgba(37, 99, 235, 0.12);
-    }
-
-    .preview-window {
-      position: relative;
-      background: #0f172a;
-      border-radius: 20px;
-      padding: 14px;
-      color: #e5e7eb;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
-    }
-
-    .dots {
-      display: flex;
-      gap: 7px;
-      margin-bottom: 14px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #475569;
-    }
-
-    .preview-card {
-      background: #111c33;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      border-radius: 14px;
-      padding: 14px;
-      margin-top: 10px;
-    }
-
-    .preview-label {
-      color: #93c5fd;
-      font-size: 12px;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-
-    .preview-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .chip {
-      display: inline-flex;
       align-items: center;
-      border-radius: 999px;
-      padding: 5px 9px;
-      background: rgba(37, 99, 235, 0.16);
-      color: #bfdbfe;
-      font-size: 12px;
-      font-weight: 700;
+      justify-content: center;
+      background: #111827;
     }
 
-    .preview-list {
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      max-height: 560px;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.24);
+    }
+
+    .summary-grid {
       display: grid;
-      gap: 10px;
-      margin-top: 8px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
     }
 
-    .preview-list div {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 11px 12px;
-      background: var(--surface-soft);
+    .summary-card {
+      background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 14px;
-      font-size: 14px;
-    }
-
-    .preview-list strong {
-      color: var(--text);
-    }
-
-    .preview-list span {
-      color: var(--muted);
-      text-align: right;
-    }
-
-    .section-grid {
-      display: grid;
-      grid-template-columns: 0.82fr 1.18fr;
-      gap: 22px;
-      margin-top: 24px;
-    }
-
-    section {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      padding: 28px;
+      border-radius: var(--radius);
+      padding: 24px;
       box-shadow: 0 12px 28px rgba(15, 23, 42, 0.045);
     }
 
-    .full {
-      margin-top: 22px;
+    .summary-card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .summary-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.045);
+      margin-top: 18px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      align-items: stretch;
     }
 
     h2 {
@@ -323,11 +255,6 @@
       font-size: 25px;
       line-height: 1.25;
       letter-spacing: -0.035em;
-    }
-
-    h3 {
-      margin: 0 0 6px;
-      font-size: 17px;
     }
 
     p {
@@ -339,46 +266,12 @@
     ul,
     ol {
       margin: 12px 0 0;
-      padding-left: 21px;
+      padding-left: 22px;
     }
 
     li {
       margin: 7px 0;
       color: #374151;
-    }
-
-    .feature-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .feature {
-      display: grid;
-      grid-template-columns: 38px 1fr;
-      gap: 12px;
-      align-items: start;
-      padding: 15px;
-      border-radius: 16px;
-      background: var(--surface-soft);
-      border: 1px solid var(--line);
-    }
-
-    .num {
-      width: 38px;
-      height: 38px;
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      background: var(--primary-soft);
-      color: var(--primary-dark);
-      font-weight: 900;
-    }
-
-    .feature p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
     }
 
     .flow {
@@ -388,84 +281,120 @@
       margin-top: 16px;
     }
 
-    .flow-step {
-      position: relative;
-      min-height: 126px;
+    .flow-item {
       padding: 17px;
+      min-height: 126px;
       border-radius: 18px;
-      background: var(--surface-soft);
+      background: #f8fafc;
       border: 1px solid var(--line);
     }
 
-    .flow-step b {
+    .flow-item strong {
       display: block;
-      margin-bottom: 8px;
       color: var(--primary-dark);
+      margin-bottom: 8px;
     }
 
-    .flow-step span {
+    .flow-item span {
       color: var(--muted);
       font-size: 14px;
     }
 
-    .tech {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .tech span {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: var(--surface-soft);
-      border: 1px solid var(--line);
-      color: #334155;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .note-box {
-      background: linear-gradient(135deg, #eff6ff, #f8fafc);
-      border: 1px solid #bfdbfe;
-    }
-
-    .two-col {
+    .feature-list {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-top: 14px;
+      gap: 12px;
+      margin-top: 12px;
     }
 
-    .mini-card {
+    .feature {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 12px;
       padding: 16px;
-      border-radius: 16px;
-      background: var(--surface-soft);
+      border-radius: 18px;
+      background: #f8fafc;
       border: 1px solid var(--line);
     }
 
-    .mini-card p {
+    .num {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--soft-blue);
+      color: var(--primary-dark);
+      font-weight: 900;
+    }
+
+    .feature h3 {
+      margin: 0 0 4px;
+      font-size: 17px;
+    }
+
+    .feature p {
       margin: 0;
       color: var(--muted);
       font-size: 14px;
     }
 
-    footer {
-      color: var(--muted);
-      text-align: center;
-      padding: 34px 0 50px;
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      color: #334155;
+      font-weight: 750;
       font-size: 14px;
     }
 
-    @media (max-width: 920px) {
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .check {
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: var(--soft-green);
+      color: #166534;
+      font-weight: 750;
+      border: 1px solid #bbf7d0;
+    }
+
+    .note {
+      background: linear-gradient(135deg, var(--soft-blue), #ffffff);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 34px 0 0;
+      font-size: 14px;
+    }
+
+    @media (max-width: 960px) {
       .hero,
-      .section-grid,
       .two-col {
         grid-template-columns: 1fr;
       }
 
+      .summary-grid,
       .flow {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-image img {
+        max-height: 420px;
       }
     }
 
@@ -474,21 +403,26 @@
         width: min(100% - 24px, 1120px);
       }
 
-      .topbar {
+      .top {
         flex-direction: column;
         align-items: flex-start;
-        gap: 6px;
       }
 
-      .hero-main,
-      .hero-preview,
+      .hero-text,
       section {
         padding: 22px;
         border-radius: 22px;
       }
 
-      .meta-row,
-      .flow {
+      .hero-image {
+        padding: 12px;
+        border-radius: 22px;
+      }
+
+      .summary-grid,
+      .flow,
+      .mini-meta,
+      .checklist {
         grid-template-columns: 1fr;
       }
 
@@ -504,21 +438,21 @@
 </head>
 <body>
   <div class="wrap">
-    <nav class="topbar" aria-label="프로젝트 상단 정보">
+    <nav class="top">
       <div class="brand">
-        <div class="brand-mark">AI</div>
+        <div class="brand-icon">AI</div>
         <span>AI Web Convergence Project</span>
       </div>
       <span>Local Document Organizer Agent · by sj</span>
     </nav>
 
     <header class="hero">
-      <div class="hero-main">
-        <div class="eyebrow">문서 정리를 도와주는 AI Agent</div>
+      <div class="hero-text">
+        <div class="tag">📁 AI 기반 로컬 문서 정리 웹앱</div>
         <h1>Local Document<br />Organizer Agent</h1>
         <p class="lead">
           TXT, Markdown, PDF 문서를 업로드하면 AI가 문서 유형을 분류하고
-          핵심 키워드, 요약, 추천 파일명, 중복 후보를 한 번에 정리해 주는 웹 애플리케이션입니다.
+          핵심 키워드, 요약, 추천 파일명, 중복 후보를 한 번에 정리해 주는 문서 정리 보조 도구입니다.
         </p>
 
         <div class="actions">
@@ -526,177 +460,171 @@
           <a class="btn" href="https://github.com/lightleaping/local-document-organizer-agent" target="_blank" rel="noopener noreferrer">⌨ GitHub 보기</a>
         </div>
 
-        <div class="meta-row">
-          <div class="meta">
+        <div class="mini-meta">
+          <div>
             <strong>Input</strong>
             <span>TXT · Markdown · PDF</span>
           </div>
-          <div class="meta">
+          <div>
             <strong>AI</strong>
-            <span>SentenceTransformer</span>
+            <span>문서 분류 · 요약</span>
           </div>
-          <div class="meta">
+          <div>
             <strong>Output</strong>
-            <span>요약 · 키워드 · 리포트</span>
+            <span>파일명 · 리포트</span>
           </div>
         </div>
       </div>
 
-      <aside class="hero-preview" aria-label="프로젝트 미리보기">
-        <div class="preview-window">
-          <div class="dots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
-
-          <div class="preview-card">
-            <div class="preview-label">Uploaded Document</div>
-            <div class="preview-title">project_readme.md</div>
-            <div class="chip-row">
-              <span class="chip">README</span>
-              <span class="chip">AI Agent</span>
-              <span class="chip">문서 정리</span>
-            </div>
-          </div>
-
-          <div class="preview-card">
-            <div class="preview-label">Suggested File Name</div>
-            <div class="preview-title">local_document_organizer_readme.md</div>
-          </div>
-        </div>
-
-        <div class="preview-list">
-          <div><strong>문서 유형</strong><span>Project README</span></div>
-          <div><strong>핵심 기능</strong><span>분류 · 요약 · 중복 탐지</span></div>
-          <div><strong>결과 형태</strong><span>Web UI + Markdown Report</span></div>
-        </div>
-      </aside>
+      <div class="hero-image">
+        <img src="screenshot.png" alt="Local Document Organizer Agent 실행 화면" />
+      </div>
     </header>
 
-    <div class="section-grid">
-      <section>
-        <h2>프로젝트 소개</h2>
-        <p>
-          <strong>Local Document Organizer Agent</strong>는 사용자가 보유한 문서를 더 쉽게 정리할 수 있도록 만든
-          AI 기반 문서 관리 도구입니다.
-        </p>
-        <p>
-          프로젝트를 진행하다 보면 README, 기획서, 학습자료, 포트폴리오, TODO 문서처럼 다양한 파일이 계속 쌓입니다.
-          시간이 지나면 어떤 파일이 최신인지, 어떤 문서가 어떤 프로젝트에 해당하는지 헷갈리기 쉽습니다.
-        </p>
-        <p>
-          이 프로젝트는 문서를 업로드하면 AI가 문서 내용을 분석해 정리 기준을 자동으로 제안합니다.
-        </p>
-      </section>
-
-      <section>
-        <h2>핵심 기능</h2>
-        <div class="feature-list">
-          <div class="feature">
-            <div class="num">1</div>
-            <div>
-              <h3>문서 유형 분류</h3>
-              <p>문서의 문장, 키워드, 구조를 참고해 README, 기획서, 학습자료, 포트폴리오 등으로 분류합니다.</p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="num">2</div>
-            <div>
-              <h3>요약·키워드·추천 파일명 생성</h3>
-              <p>문서의 핵심 내용을 요약하고 중요한 키워드와 정리하기 쉬운 파일명을 제안합니다.</p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="num">3</div>
-            <div>
-              <h3>중복 후보와 Markdown 리포트</h3>
-              <p>여러 문서 간 유사도를 비교하고, 분석 결과를 Markdown 리포트로 정리합니다.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div class="summary-grid">
+      <article class="summary-card">
+        <h3>트랙</h3>
+        <p>HF 모델 매시업 또는 자유 구성형 AI 웹 프로젝트</p>
+      </article>
+      <article class="summary-card">
+        <h3>인프라</h3>
+        <p>웹 소개 페이지와 실행 데모 페이지를 분리해 구성</p>
+      </article>
+      <article class="summary-card">
+        <h3>핵심 목표</h3>
+        <p>문서를 하나씩 열어보지 않아도 정리 방향을 빠르게 파악</p>
+      </article>
     </div>
 
-    <section class="full">
-      <h2>사용 흐름</h2>
-      <p>사용자는 문서를 업로드하기만 하면, 시스템이 텍스트 추출부터 결과 리포트 생성까지 순서대로 처리합니다.</p>
-      <div class="flow">
-        <div class="flow-step">
-          <b>01 Upload</b>
-          <span>TXT, Markdown, PDF 문서를 웹 화면에서 업로드합니다.</span>
+    <section class="note">
+      <h2>한 줄 요약</h2>
+      <p>
+        사용자가 TXT, Markdown, PDF 문서를 업로드하면 AI가 문서 유형, 핵심 키워드, 요약,
+        추천 파일명, 중복 후보를 분석해 문서 정리를 도와주는 웹 애플리케이션입니다.
+      </p>
+    </section>
+
+    <section class="two-col">
+      <div>
+        <h2>문제</h2>
+        <p>
+          프로젝트와 과제를 진행하다 보면 README, 기획서, 학습자료, 포트폴리오, TODO 문서처럼
+          다양한 파일이 계속 쌓입니다.
+        </p>
+        <p>
+          시간이 지나면 파일명만 보고는 어떤 문서가 최신인지, 어떤 프로젝트에 해당하는지,
+          비슷한 문서가 중복으로 존재하는지 파악하기 어렵습니다.
+        </p>
+        <p>
+          이 프로젝트는 문서 내용을 AI가 분석해 사용자가 더 빠르고 체계적으로 파일을 정리할 수 있도록 돕습니다.
+        </p>
+      </div>
+
+      <div>
+        <h2>사용자</h2>
+        <p>
+          주 사용자는 과제, 프로젝트, 포트폴리오, 학습 자료를 자주 정리해야 하는 학생 또는 신입 개발자입니다.
+        </p>
+        <p>
+          여러 개의 README, PDF, Markdown 파일을 관리하면서 문서의 성격과 핵심 내용을 빠르게 파악하고 싶은 사용자를 대상으로 합니다.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>핵심 기능</h2>
+      <div class="feature-list">
+        <div class="feature">
+          <div class="num">1</div>
+          <div>
+            <h3>문서 유형 분류</h3>
+            <p>문서 내용과 구조를 바탕으로 README, 기획서, 학습자료, 포트폴리오, TODO 등으로 분류합니다.</p>
+          </div>
         </div>
-        <div class="flow-step">
-          <b>02 Extract</b>
+        <div class="feature">
+          <div class="num">2</div>
+          <div>
+            <h3>핵심 키워드·요약·추천 파일명 생성</h3>
+            <p>문서에서 중요한 표현을 추출하고, 주요 내용을 요약하며, 정리하기 쉬운 파일명을 제안합니다.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="num">3</div>
+          <div>
+            <h3>중복 후보 탐지 및 Markdown 리포트</h3>
+            <p>여러 문서 간 유사도를 비교해 중복 후보를 표시하고, 전체 분석 결과를 Markdown 리포트로 제공합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>입력 → AI 처리 → 출력</h2>
+      <div class="flow">
+        <div class="flow-item">
+          <strong>01 입력</strong>
+          <span>사용자가 TXT, Markdown, PDF 문서를 업로드합니다.</span>
+        </div>
+        <div class="flow-item">
+          <strong>02 텍스트 추출</strong>
           <span>문서에서 텍스트를 추출하고 분석 가능한 형태로 변환합니다.</span>
         </div>
-        <div class="flow-step">
-          <b>03 Analyze</b>
-          <span>문서 유형, 핵심 키워드, 요약, 추천 파일명을 생성합니다.</span>
+        <div class="flow-item">
+          <strong>03 AI 처리</strong>
+          <span>문서 유형 분류, 키워드 추출, 요약, 추천 파일명 생성을 수행합니다.</span>
         </div>
-        <div class="flow-step">
-          <b>04 Report</b>
-          <span>중복 후보와 최종 분석 결과를 화면과 Markdown 리포트로 제공합니다.</span>
+        <div class="flow-item">
+          <strong>04 출력</strong>
+          <span>분석 결과와 중복 후보, Markdown 리포트를 화면에 표시합니다.</span>
         </div>
       </div>
     </section>
 
-    <section class="full">
-      <h2>기술 구성</h2>
-      <p>외부 API에 의존하기보다 로컬 임베딩 모델과 규칙 기반 보정을 결합해 문서 정리 기능을 구현했습니다.</p>
-      <div class="tech">
-        <span>Streamlit</span>
-        <span>Python</span>
-        <span>PyMuPDF</span>
-        <span>SentenceTransformer</span>
-        <span>Local Embedding</span>
-        <span>Text Similarity</span>
-        <span>Extractive Summary</span>
-        <span>Markdown Report</span>
+    <section>
+      <h2>기술 스택</h2>
+      <div class="chips">
+        <span class="chip">Streamlit</span>
+        <span class="chip">Python</span>
+        <span class="chip">PyMuPDF</span>
+        <span class="chip">SentenceTransformer</span>
+        <span class="chip">Local Embedding</span>
+        <span class="chip">Text Similarity</span>
+        <span class="chip">Extractive Summary</span>
+        <span class="chip">Markdown Report</span>
       </div>
     </section>
 
-    <div class="section-grid">
-      <section class="note-box">
-        <h2>프로젝트의 특징</h2>
+    <section class="two-col">
+      <div>
+        <h2>데이터 출처</h2>
         <p>
-          일반적인 파일 관리 도구는 파일명, 확장자, 생성일, 수정일을 기준으로 문서를 보여줍니다.
-          하지만 이 프로젝트는 문서의 실제 내용을 분석해 문서 유형, 핵심 키워드, 요약, 추천 파일명,
-          중복 후보를 함께 제공합니다.
+          사용자가 직접 업로드하는 TXT, Markdown, PDF 문서를 입력 데이터로 사용합니다.
+          테스트용 문서는 본인이 작성한 프로젝트 README, 학습자료, 기획서, 포트폴리오 문서 등을 사용합니다.
         </p>
         <p>
-          따라서 문서를 하나씩 열어보지 않아도 어떤 문서인지 빠르게 파악하고 정리 방향을 잡을 수 있습니다.
+          저작권 또는 개인정보 문제가 있는 문서는 사용하지 않으며,
+          기본 모드에서는 외부 API로 문서 내용이 전송되지 않도록 구성했습니다.
         </p>
-      </section>
+      </div>
 
-      <section>
-        <h2>기대 효과</h2>
-        <ul>
-          <li>프로젝트별 README와 문서가 여러 개 쌓였을 때 빠르게 정리할 수 있습니다.</li>
-          <li>과제 자료와 학습 노트를 문서 유형별로 파악할 수 있습니다.</li>
-          <li>포트폴리오나 자기소개서 초안처럼 여러 버전으로 나뉜 문서를 비교할 수 있습니다.</li>
-          <li>문서 내용을 바탕으로 더 적절한 파일명을 정할 수 있습니다.</li>
-        </ul>
-      </section>
-    </div>
+      <div>
+        <h2>완료 조건</h2>
+        <p>
+          앱 실행 후 TXT, Markdown, PDF 샘플 문서를 업로드하면 각 문서에 대해
+          문서 유형, 핵심 키워드, 요약, 추천 파일명, 중복 후보 여부, Markdown 리포트가 화면에 출력됩니다.
+        </p>
+      </div>
+    </section>
 
-    <section class="full">
-      <h2>한계와 개선 방향</h2>
-      <div class="two-col">
-        <div class="mini-card">
-          <h3>현재 한계</h3>
-          <p>
-            PDF에서 텍스트가 제대로 추출되지 않는 경우 분석 품질이 떨어질 수 있습니다.
-            또한 추천 파일명과 문서 유형은 사용자가 최종 확인해야 하는 보조 결과입니다.
-          </p>
-        </div>
-        <div class="mini-card">
-          <h3>개선 방향</h3>
-          <p>
-            OCR 추가, 사용자 정의 문서 유형, 프로젝트별 폴더 추천, CSV/JSON 저장,
-            여러 문서 비교 대시보드 기능으로 확장할 수 있습니다.
-          </p>
-        </div>
+    <section>
+      <h2>적격성 체크리스트</h2>
+      <div class="checklist">
+        <div class="check">✓ AI 기능이 핵심에 있음</div>
+        <div class="check">✓ inference 중심 구조</div>
+        <div class="check">✓ 문서 업로드 후 분석 결과 출력</div>
+        <div class="check">✓ 영구 저장 없이 사용 가능</div>
+        <div class="check">✓ 데이터 출처는 사용자 직접 업로드 문서</div>
+        <div class="check">✓ GitHub와 웹페이지로 결과 확인 가능</div>
       </div>
     </section>
 
