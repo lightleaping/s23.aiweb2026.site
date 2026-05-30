@@ -10,11 +10,13 @@
 
 ## 실행 데모 및 저장소
 
-- 실행 데모: https://huggingface.co/spaces/skyleaping/local-document-organizer-agent
+- 실행 데모: https://skyleaping-local-document-organizer-agent.hf.space
 - 소개 페이지 저장소: https://github.com/lightleaping/s23.aiweb2026.site
 - 소개 페이지: https://s23.aiweb2026.site
 
 현재 데모는 Hugging Face Spaces에 배포되어 있으며, TXT, Markdown, PDF 문서를 업로드해 분석 결과를 확인할 수 있습니다.
+
+파일 업로드 기능이 포함되어 있어 Streamlit 배포 환경에서는 `.streamlit/config.toml` 설정을 함께 사용합니다.
 
 ---
 
