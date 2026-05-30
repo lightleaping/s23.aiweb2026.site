@@ -3,626 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Local Document Organizer Agent</title>
-  <style>
-    :root {
-      --bg: #f6f7fb;
-      --paper: #ffffff;
-      --text: #172033;
-      --muted: #667085;
-      --line: #e5e7eb;
-      --blue: #2563eb;
-      --blue-dark: #1d4ed8;
-      --blue-soft: #eff6ff;
-      --green-soft: #ecfdf3;
-      --green: #15803d;
-      --yellow-soft: #fffbeb;
-      --yellow: #92400e;
-      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
-      --radius: 22px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(37, 99, 235, 0.13), transparent 32%),
-        radial-gradient(circle at top right, rgba(99, 102, 241, 0.10), transparent 30%),
-        var(--bg);
-      line-height: 1.65;
-    }
-
-    a {
-      color: inherit;
-    }
-
-    .wrap {
-      width: min(1080px, calc(100% - 36px));
-      margin: 0 auto;
-      padding: 26px 0 56px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 18px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      color: var(--text);
-    }
-
-    .brand-mark {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      background: var(--blue);
-      color: #fff;
-      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.24);
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 22px;
-      align-items: stretch;
-      margin-bottom: 22px;
-    }
-
-    .hero-text,
-    .hero-shot,
-    section,
-    .summary-card {
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(226, 232, 240, 0.95);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .hero-text {
-      padding: 38px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .badge {
-      width: fit-content;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: var(--blue-soft);
-      color: var(--blue-dark);
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 18px;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(34px, 5vw, 56px);
-      line-height: 1.06;
-      letter-spacing: -0.055em;
-    }
-
-    .subtitle {
-      margin: 18px 0 0;
-      color: var(--muted);
-      font-size: 18px;
-      word-break: keep-all;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 28px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0 18px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: #fff;
-      text-decoration: none;
-      font-weight: 800;
-      transition: 0.16s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.13);
-    }
-
-    .btn.primary {
-      background: var(--blue);
-      border-color: var(--blue);
-      color: #fff;
-    }
-
-    .hero-shot {
-      padding: 14px;
-      background: #111827;
-      overflow: hidden;
-    }
-
-    .hero-shot img {
-      width: 100%;
-      height: 100%;
-      min-height: 360px;
-      max-height: 520px;
-      object-fit: cover;
-      object-position: top center;
-      border-radius: 16px;
-      display: block;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .notice {
-      margin: 0 0 22px;
-      padding: 18px 22px;
-      border-radius: var(--radius);
-      background: var(--yellow-soft);
-      border: 1px solid #fde68a;
-      color: var(--yellow);
-      font-size: 15px;
-    }
-
-    .notice p {
-      margin: 0;
-      color: inherit;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .summary-card {
-      padding: 22px;
-      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.045);
-    }
-
-    .summary-card h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-      letter-spacing: -0.02em;
-    }
-
-    .summary-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    section {
-      padding: 28px;
-      margin-top: 18px;
-      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.045);
-    }
-
-    .two {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    h2 {
-      margin: 0 0 14px;
-      font-size: 24px;
-      line-height: 1.25;
-      letter-spacing: -0.035em;
-    }
-
-    h3 {
-      margin: 0 0 6px;
-      font-size: 17px;
-    }
-
-    p {
-      margin: 0 0 12px;
-      color: #374151;
-      word-break: keep-all;
-    }
-
-    ul,
-    ol {
-      margin: 10px 0 0;
-      padding-left: 22px;
-    }
-
-    li {
-      margin: 7px 0;
-      color: #374151;
-    }
-
-    .track-list,
-    .checklist {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .track-item,
-    .check {
-      padding: 13px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: #f8fafc;
-      color: #334155;
-      font-weight: 700;
-    }
-
-    .selected {
-      border-color: #bfdbfe;
-      background: var(--blue-soft);
-      color: var(--blue-dark);
-    }
-
-    .check.selected {
-      border-color: #bbf7d0;
-      background: var(--green-soft);
-      color: var(--green);
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 14px;
-    }
-
-    .feature {
-      padding: 18px;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      background: #f8fafc;
-    }
-
-    .feature-number {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      background: var(--blue-soft);
-      color: var(--blue-dark);
-      font-weight: 900;
-      margin-bottom: 10px;
-    }
-
-    .feature p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .flow {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .flow-step {
-      padding: 16px;
-      min-height: 124px;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      background: #f8fafc;
-    }
-
-    .flow-step strong {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--blue-dark);
-    }
-
-    .flow-step span {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .stack {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .stack span {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: #f8fafc;
-      border: 1px solid var(--line);
-      font-weight: 750;
-      color: #334155;
-      font-size: 14px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 34px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    @media (max-width: 920px) {
-      .hero,
-      .two,
-      .summary-grid,
-      .features,
-      .flow {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-shot img {
-        min-height: 280px;
-        max-height: 420px;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .wrap {
-        width: min(100% - 24px, 1080px);
-      }
-
-      .topbar {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .hero-text,
-      section {
-        padding: 22px;
-      }
-
-      .actions {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-      }
-    }
-  </style>
+  <!-- ⬇⬇⬇ 본인 정보로 교체 ⬇⬇⬇ -->
+  <title>📁 Local Document Organizer Agent — by sj</title>
+  <meta name="description" content="TXT, Markdown, PDF 문서를 업로드하면 AI가 문서 유형, 핵심 키워드, 요약, 추천 파일명, 중복 후보를 정리해 주는 로컬 문서 정리 웹 애플리케이션" />
+  <!-- ⬆⬆⬆ 본인 정보로 교체 ⬆⬆⬆ -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- 11주차 — contents.md inline 렌더용 -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/zero-md@3?register"></script>
 </head>
 <body>
-  <main class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="brand-mark">AI</div>
-        <span>AI Web Convergence Project</span>
-      </div>
-      <span>11주차 기말 프로젝트 한 장 요약</span>
-    </div>
 
-    <header class="hero">
-      <div class="hero-text">
-        <div class="badge">본인 기말 프로젝트</div>
-        <h1>Local Document<br />Organizer Agent</h1>
-        <p class="subtitle">
-          문서를 업로드하면 AI가 문서 유형, 핵심 키워드, 추천 파일명, 요약, 중복 후보를 정리해 주는
-          로컬 문서 정리 웹 애플리케이션입니다.
-        </p>
-
-        <div class="actions">
-          <a class="btn primary" href="https://s23-demo.aiweb2026.site/" target="_blank" rel="noopener noreferrer">▶ 실행하기</a>
-          <a class="btn" href="https://github.com/lightleaping/local-document-organizer-agent" target="_blank" rel="noopener noreferrer">⌨ GitHub 보기</a>
-        </div>
-      </div>
-
-      <div class="hero-shot">
-        <img src="screenshot.png" alt="Local Document Organizer Agent 실행 화면" />
-      </div>
-    </header>
-
-    <div class="notice">
-      <p>
-        이 페이지는 AI웹융합 기말 프로젝트를 소개하기 위한 한 장 요약 페이지입니다.
-        실행 화면, 프로젝트 개요, 핵심 기능, 기술 스택, 완료 조건을 한눈에 확인할 수 있도록 구성했습니다.
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="container">
+      <!-- ⬇⬇⬇ 본인 프로젝트로 교체 (예: "🚀 칼로리카운터") ⬇⬇⬇ -->
+      <h1>📁 Local Document Organizer Agent</h1>
+      <p class="tagline">
+        TXT, Markdown, PDF 문서를 업로드하면 AI가 문서 유형, 핵심 키워드, 요약, 추천 파일명, 중복 후보를 정리해 주는 웹 애플리케이션
       </p>
+      <!-- ⬆⬆⬆ 본인 프로젝트로 교체 ⬆⬆⬆ -->
     </div>
+  </header>
 
-    <div class="summary-grid">
-      <article class="summary-card">
-        <h3>한 줄 요약</h3>
-        <p>TXT, Markdown, PDF 문서를 업로드하면 AI가 문서 정리 정보를 자동 생성하는 웹앱</p>
-      </article>
-      <article class="summary-card">
-        <h3>사용자</h3>
-        <p>프로젝트·과제·포트폴리오 문서를 자주 정리해야 하는 학생 또는 신입 개발자</p>
-      </article>
-      <article class="summary-card">
-        <h3>완료 기준</h3>
-        <p>문서 업로드 후 유형, 키워드, 요약, 추천 파일명, 중복 후보가 화면에 출력됨</p>
-      </article>
-    </div>
+  <main class="container">
 
-    <section>
-      <h2>한 줄 요약</h2>
-      <p>
-        사용자가 TXT, Markdown, PDF 문서를 업로드하면 AI가 문서 유형, 핵심 키워드, 요약,
-        추천 파일명, 중복 후보를 분석해 문서 정리를 도와주는 웹 애플리케이션입니다.
+    <!-- ============ 데모 카드 ============ -->
+    <section class="demo-card">
+      <!-- ⬇⬇⬇ screenshot.png 를 본인 프로젝트 화면 캡쳐로 교체 ⬇⬇⬇ -->
+      <img class="screenshot" src="screenshot.png" alt="Local Document Organizer Agent 데모 화면" />
+      <!-- ⬆⬆⬆ screenshot.png 를 본인 프로젝트 화면 캡쳐로 교체 ⬆⬆⬆ -->
+
+      <div class="cta">
+        <!-- ⬇⬇⬇ 다음 주(10주차) 데모 띄운 후 href="#" 를 진짜 도메인으로 ⬇⬇⬇ -->
+        <!-- <a class="btn btn-primary" href="https://example-demo.aiweb2026.site">
+          ▶ Live Demo
+        </a> -->
+        <a class="btn primary" href="https://skyleaping-local-document-organizer-agent.hf.space" target="_blank" rel="noopener noreferrer">▶ 실행하기</a>
+          ▶ Live Demo <span class="badge">Coming Week 10</span>
+        </a>
+        <!-- ⬆⬆⬆ 다음 주에 href="https://&lt;본인 ID&gt;-demo.aiweb2026.site" 로 변경 ⬆⬆⬆ -->
+
+        <!-- ⬇⬇⬇ 본인 GitHub 리포 URL 로 교체 ⬇⬇⬇ -->
+        <a class="btn btn-secondary" href="https://github.com/&lt;본인 GitHub username&gt;/&lt;본인 프로젝트 리포&gt;" target="_blank" rel="noopener">
+          ⌨ Source on GitHub
+        </a>
+        <!-- ⬆⬆⬆ 본인 GitHub 리포 URL 로 교체 ⬆⬆⬆ -->
+      </div>
+    </section>
+
+    <!-- ============ 본문 (contents.md 인라인 렌더) ============ -->
+    <section class="content">
+      <!-- ⬇⬇⬇ 같은 폴더의 contents.md 를 수정하면 자동 반영 ⬇⬇⬇ -->
+      <zero-md src="contents.md" no-shadow></zero-md>
+      <!-- ⬆⬆⬆ 같은 폴더의 contents.md 를 수정하면 자동 반영 ⬆⬆⬆ -->
+    </section>
+
+    <!-- ============ Giscus 댓글 (8장에서 추가) ============ -->
+    <section id="comments" class="comments">
+      <h2>💬 이 프로젝트 어떠세요?</h2>
+      <p class="comments-note">
+        GitHub 계정으로 로그인하면 댓글이 본인 리포의 GitHub Discussions에 자동 저장됩니다.
       </p>
+
+      <!--
+        ⬇⬇⬇ 9주차 SECTION 8 에서 giscus.app 가 자동 생성한 script 코드를 여기에 붙여넣기 ⬇⬇⬇
+        교체할 속성:
+          - data-repo
+          - data-repo-id
+          - data-category-id
+        나머지 속성은 그대로 두세요.
+      -->
+      <div class="giscus"></div>
+      <script src="https://giscus.app/client.js"
+        data-repo="aprilslab/aiweb2026"
+        data-repo-id="R_kgDOSPkZMg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOSPkZMs4C78hA"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="ko"
+        crossorigin="anonymous"
+        async>
+      </script>
+      <!-- ⬆⬆⬆ giscus 설정값 교체 ⬆⬆⬆ -->
     </section>
-
-    <div class="two">
-      <section>
-        <h2>트랙</h2>
-        <div class="track-list">
-          <div class="track-item">☐ A. LLM API 챗봇</div>
-          <div class="track-item selected">☑ B. HF 모델 매시업 / 로컬 모델 기반 문서 분석</div>
-          <div class="track-item">☐ C. 외부 API + LLM</div>
-          <div class="track-item">☐ 자유</div>
-        </div>
-      </section>
-
-      <section>
-        <h2>인프라 트랙</h2>
-        <div class="track-list">
-          <div class="track-item selected">☑ 웹 소개 페이지: s23.aiweb2026.site</div>
-          <div class="track-item selected">☑ 실행 데모 페이지: s23-demo.aiweb2026.site</div>
-          <div class="track-item">☐ HF Spaces 또는 OCI 배포 환경과 연동 가능</div>
-        </div>
-      </section>
-    </div>
-
-    <div class="two">
-      <section>
-        <h2>문제</h2>
-        <p>
-          개발 프로젝트와 과제를 진행하다 보면 README, 기획서, 학습자료, 포트폴리오,
-          TODO 문서처럼 다양한 파일이 계속 쌓입니다.
-        </p>
-        <p>
-          시간이 지나면 파일명만 보고는 어떤 문서가 최신인지, 어떤 프로젝트에 해당하는지,
-          비슷한 문서가 중복으로 존재하는지 파악하기 어렵습니다.
-        </p>
-        <p>
-          이 프로젝트는 문서 내용을 AI가 분석해 사용자가 더 빠르고 체계적으로 파일을 정리할 수 있도록 돕습니다.
-        </p>
-      </section>
-
-      <section>
-        <h2>사용자</h2>
-        <p>
-          주 사용자는 과제, 프로젝트, 포트폴리오, 학습 자료를 자주 정리해야 하는 학생 또는 신입 개발자입니다.
-        </p>
-        <p>
-          여러 개의 README, PDF, Markdown 파일을 관리하면서 문서의 성격과 핵심 내용을 빠르게 파악하고 싶은 사용자를 대상으로 합니다.
-        </p>
-      </section>
-    </div>
-
-    <section>
-      <h2>핵심 기능</h2>
-      <div class="features">
-        <div class="feature">
-          <div class="feature-number">1</div>
-          <h3>문서 유형 분류</h3>
-          <p>문서 내용과 구조를 바탕으로 README, 기획서, 학습자료, 포트폴리오, TODO 등으로 분류합니다.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-number">2</div>
-          <h3>요약·키워드·파일명 생성</h3>
-          <p>문서의 핵심 내용을 요약하고, 중요한 키워드와 정리하기 쉬운 추천 파일명을 생성합니다.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-number">3</div>
-          <h3>중복 후보·리포트 생성</h3>
-          <p>여러 문서 간 유사도를 비교해 중복 후보를 찾고, 분석 결과를 Markdown 리포트로 제공합니다.</p>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>입력 → AI 처리 → 출력</h2>
-      <div class="flow">
-        <div class="flow-step">
-          <strong>입력</strong>
-          <span>사용자가 TXT, Markdown, PDF 문서를 업로드합니다.</span>
-        </div>
-        <div class="flow-step">
-          <strong>텍스트 추출</strong>
-          <span>문서에서 텍스트를 추출하고 분석 가능한 형태로 변환합니다.</span>
-        </div>
-        <div class="flow-step">
-          <strong>AI 처리</strong>
-          <span>문서 유형 분류, 키워드 추출, 요약, 추천 파일명 생성을 수행합니다.</span>
-        </div>
-        <div class="flow-step">
-          <strong>출력</strong>
-          <span>분석 결과와 중복 후보, Markdown 리포트를 화면에 표시합니다.</span>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>기술 스택</h2>
-      <div class="stack">
-        <span>UI: Streamlit</span>
-        <span>Language: Python</span>
-        <span>PDF 처리: PyMuPDF</span>
-        <span>모델: SentenceTransformer</span>
-        <span>문서 분류: 임베딩 유사도 + 규칙 기반 보정</span>
-        <span>요약: 핵심 문장 기반 추출형 요약</span>
-        <span>중복 탐지: Text Similarity</span>
-        <span>출력: Markdown Report</span>
-      </div>
-    </section>
-
-    <div class="two">
-      <section>
-        <h2>데이터 출처</h2>
-        <p>
-          사용자가 직접 업로드하는 TXT, Markdown, PDF 문서를 입력 데이터로 사용합니다.
-          테스트용 문서는 본인이 작성한 프로젝트 README, 학습자료, 기획서, 포트폴리오 문서 등을 사용합니다.
-        </p>
-        <p>
-          저작권 또는 개인정보 문제가 있는 문서는 사용하지 않으며,
-          기본 모드에서는 외부 API로 문서 내용이 전송되지 않도록 구성합니다.
-        </p>
-      </section>
-
-      <section>
-        <h2>완료 조건</h2>
-        <p>
-          앱 실행 후 TXT, Markdown, PDF 샘플 문서를 업로드하면 각 문서에 대해
-          문서 유형, 핵심 키워드, 요약, 추천 파일명, 중복 후보 여부,
-          Markdown 리포트가 화면에 출력됩니다.
-        </p>
-      </section>
-    </div>
-
-    <section>
-      <h2>적격성 체크리스트</h2>
-      <div class="checklist">
-        <div class="check selected">☑ AI 기능이 핵심에 있음</div>
-        <div class="check selected">☑ inference만 필요</div>
-        <div class="check selected">☑ 모델 1GB 이하 또는 외부 API 호출 조건 대응 가능</div>
-        <div class="check selected">☑ 한 요청 30초 이내를 목표로 구성</div>
-        <div class="check selected">☑ 영구 저장 불필요</div>
-        <div class="check selected">☑ 데이터 출처 적격</div>
-        <div class="check selected">☑ GitHub와 웹페이지로 유지 가능</div>
-        <div class="check selected">☑ 완료 조건 한 줄로 명확</div>
-      </div>
-    </section>
-
-    <section>
-      <h2>메모</h2>
-      <ul>
-        <li>피어 피드백 1:</li>
-        <li>피어 피드백 2:</li>
-        <li>강사 판정: ○ / △ / ✗</li>
-        <li>강사 코멘트:</li>
-      </ul>
-    </section>
-
-    <footer>
-      © 2026 sj · Local Document Organizer Agent
-    </footer>
   </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        2026 AI 웹 융합 · 9주차 데모 소개 페이지 ·
+        <a href="https://aiweb2026.site">aiweb2026.site</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>
