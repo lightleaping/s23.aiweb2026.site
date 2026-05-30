@@ -7,17 +7,19 @@
   <style>
     :root {
       --bg: #f6f7fb;
-      --card: #ffffff;
-      --text: #111827;
+      --paper: #ffffff;
+      --text: #172033;
       --muted: #667085;
       --line: #e5e7eb;
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --soft-blue: #eff6ff;
-      --soft-green: #ecfdf3;
-      --soft-purple: #f5f3ff;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --blue-soft: #eff6ff;
+      --green-soft: #ecfdf3;
+      --green: #15803d;
+      --yellow-soft: #fffbeb;
+      --yellow: #92400e;
       --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
-      --radius: 24px;
+      --radius: 22px;
     }
 
     * {
@@ -29,8 +31,8 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 34%),
-        radial-gradient(circle at top right, rgba(124, 58, 237, 0.10), transparent 34%),
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.13), transparent 32%),
+        radial-gradient(circle at top right, rgba(99, 102, 241, 0.10), transparent 30%),
         var(--bg);
       line-height: 1.65;
     }
@@ -40,19 +42,19 @@
     }
 
     .wrap {
-      width: min(1120px, calc(100% - 36px));
+      width: min(1080px, calc(100% - 36px));
       margin: 0 auto;
-      padding: 22px 0 52px;
+      padding: 26px 0 56px;
     }
 
-    .top {
+    .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
+      margin-bottom: 18px;
       color: var(--muted);
       font-size: 14px;
-      margin-bottom: 18px;
     }
 
     .brand {
@@ -63,50 +65,48 @@
       color: var(--text);
     }
 
-    .brand-icon {
+    .brand-mark {
       width: 34px;
       height: 34px;
-      border-radius: 12px;
       display: grid;
       place-items: center;
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+      border-radius: 12px;
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.24);
     }
 
     .hero {
       display: grid;
       grid-template-columns: 0.95fr 1.05fr;
-      gap: 24px;
+      gap: 22px;
       align-items: stretch;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     .hero-text,
-    .hero-image {
-      background: rgba(255, 255, 255, 0.88);
+    .hero-shot,
+    section,
+    .summary-card {
+      background: rgba(255, 255, 255, 0.92);
       border: 1px solid rgba(226, 232, 240, 0.95);
-      border-radius: 30px;
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
-      overflow: hidden;
     }
 
     .hero-text {
-      padding: 42px;
+      padding: 38px;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
-    .tag {
+    .badge {
       width: fit-content;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
       padding: 7px 12px;
       border-radius: 999px;
-      background: var(--soft-blue);
-      color: var(--primary-dark);
+      background: var(--blue-soft);
+      color: var(--blue-dark);
       font-size: 13px;
       font-weight: 800;
       margin-bottom: 18px;
@@ -114,13 +114,13 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(34px, 5vw, 58px);
-      line-height: 1.05;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.06;
       letter-spacing: -0.055em;
     }
 
-    .lead {
-      margin: 20px 0 0;
+    .subtitle {
+      margin: 18px 0 0;
       color: var(--muted);
       font-size: 18px;
       word-break: keep-all;
@@ -130,131 +130,114 @@
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 30px;
+      margin-top: 28px;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 48px;
+      min-height: 46px;
       padding: 0 18px;
-      border-radius: 15px;
+      border-radius: 14px;
       border: 1px solid var(--line);
       background: #fff;
       text-decoration: none;
       font-weight: 800;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
-      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+      transition: 0.16s ease;
     }
 
     .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.13);
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.13);
     }
 
     .btn.primary {
-      background: var(--primary);
-      border-color: var(--primary);
+      background: var(--blue);
+      border-color: var(--blue);
       color: #fff;
     }
 
-    .btn.primary:hover {
-      background: var(--primary-dark);
-    }
-
-    .mini-meta {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 30px;
-    }
-
-    .mini-meta div {
+    .hero-shot {
       padding: 14px;
-      border-radius: 16px;
-      background: #f8fafc;
-      border: 1px solid var(--line);
-    }
-
-    .mini-meta strong {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 2px;
-    }
-
-    .mini-meta span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .hero-image {
-      padding: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background: #111827;
+      overflow: hidden;
     }
 
-    .hero-image img {
+    .hero-shot img {
       width: 100%;
       height: 100%;
-      max-height: 560px;
+      min-height: 360px;
+      max-height: 520px;
       object-fit: cover;
       object-position: top center;
-      border-radius: 20px;
+      border-radius: 16px;
+      display: block;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.24);
+    }
+
+    .notice {
+      margin: 0 0 22px;
+      padding: 18px 22px;
+      border-radius: var(--radius);
+      background: var(--yellow-soft);
+      border: 1px solid #fde68a;
+      color: var(--yellow);
+      font-size: 15px;
+    }
+
+    .notice p {
+      margin: 0;
+      color: inherit;
     }
 
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 14px;
+      margin-bottom: 18px;
     }
 
     .summary-card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 24px;
+      padding: 22px;
       box-shadow: 0 12px 28px rgba(15, 23, 42, 0.045);
     }
 
     .summary-card h3 {
       margin: 0 0 8px;
-      font-size: 18px;
+      font-size: 17px;
       letter-spacing: -0.02em;
     }
 
     .summary-card p {
       margin: 0;
       color: var(--muted);
-      font-size: 15px;
+      font-size: 14px;
     }
 
     section {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 30px;
-      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.045);
+      padding: 28px;
       margin-top: 18px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.045);
     }
 
-    .two-col {
+    .two {
       display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 18px;
-      align-items: stretch;
+      margin-top: 18px;
     }
 
     h2 {
       margin: 0 0 14px;
-      font-size: 25px;
+      font-size: 24px;
       line-height: 1.25;
       letter-spacing: -0.035em;
+    }
+
+    h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
     }
 
     p {
@@ -265,7 +248,7 @@
 
     ul,
     ol {
-      margin: 12px 0 0;
+      margin: 10px 0 0;
       padding-left: 22px;
     }
 
@@ -274,62 +257,59 @@
       color: #374151;
     }
 
-    .flow {
+    .track-list,
+    .checklist {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .flow-item {
-      padding: 17px;
-      min-height: 126px;
-      border-radius: 18px;
-      background: #f8fafc;
-      border: 1px solid var(--line);
-    }
-
-    .flow-item strong {
-      display: block;
-      color: var(--primary-dark);
-      margin-bottom: 8px;
-    }
-
-    .flow-item span {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .feature-list {
-      display: grid;
-      gap: 12px;
+      gap: 10px;
       margin-top: 12px;
     }
 
-    .feature {
-      display: grid;
-      grid-template-columns: 40px 1fr;
-      gap: 12px;
-      padding: 16px;
-      border-radius: 18px;
-      background: #f8fafc;
+    .track-item,
+    .check {
+      padding: 13px 14px;
+      border-radius: 14px;
       border: 1px solid var(--line);
+      background: #f8fafc;
+      color: #334155;
+      font-weight: 700;
     }
 
-    .num {
-      width: 40px;
-      height: 40px;
-      border-radius: 14px;
+    .selected {
+      border-color: #bfdbfe;
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+    }
+
+    .check.selected {
+      border-color: #bbf7d0;
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .feature {
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+    }
+
+    .feature-number {
+      width: 34px;
+      height: 34px;
       display: grid;
       place-items: center;
-      background: var(--soft-blue);
-      color: var(--primary-dark);
+      border-radius: 12px;
+      background: var(--blue-soft);
+      color: var(--blue-dark);
       font-weight: 900;
-    }
-
-    .feature h3 {
-      margin: 0 0 4px;
-      font-size: 17px;
+      margin-bottom: 10px;
     }
 
     .feature p {
@@ -338,92 +318,84 @@
       font-size: 14px;
     }
 
-    .chips {
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .flow-step {
+      padding: 16px;
+      min-height: 124px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+    }
+
+    .flow-step strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--blue-dark);
+    }
+
+    .flow-step span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .stack {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 14px;
     }
 
-    .chip {
+    .stack span {
       padding: 8px 12px;
       border-radius: 999px;
       background: #f8fafc;
       border: 1px solid var(--line);
+      font-weight: 750;
       color: #334155;
-      font-weight: 750;
       font-size: 14px;
-    }
-
-    .checklist {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .check {
-      padding: 13px 14px;
-      border-radius: 16px;
-      background: var(--soft-green);
-      color: #166534;
-      font-weight: 750;
-      border: 1px solid #bbf7d0;
-    }
-
-    .note {
-      background: linear-gradient(135deg, var(--soft-blue), #ffffff);
     }
 
     footer {
       text-align: center;
-      color: var(--muted);
       padding: 34px 0 0;
+      color: var(--muted);
       font-size: 14px;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 920px) {
       .hero,
-      .two-col {
+      .two,
+      .summary-grid,
+      .features,
+      .flow {
         grid-template-columns: 1fr;
       }
 
-      .summary-grid,
-      .flow {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .hero-image img {
+      .hero-shot img {
+        min-height: 280px;
         max-height: 420px;
       }
     }
 
     @media (max-width: 640px) {
       .wrap {
-        width: min(100% - 24px, 1120px);
+        width: min(100% - 24px, 1080px);
       }
 
-      .top {
-        flex-direction: column;
+      .topbar {
         align-items: flex-start;
+        flex-direction: column;
       }
 
       .hero-text,
       section {
         padding: 22px;
-        border-radius: 22px;
-      }
-
-      .hero-image {
-        padding: 12px;
-        border-radius: 22px;
-      }
-
-      .summary-grid,
-      .flow,
-      .mini-meta,
-      .checklist {
-        grid-template-columns: 1fr;
       }
 
       .actions {
@@ -437,66 +409,58 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <nav class="top">
+  <main class="wrap">
+    <div class="topbar">
       <div class="brand">
-        <div class="brand-icon">AI</div>
+        <div class="brand-mark">AI</div>
         <span>AI Web Convergence Project</span>
       </div>
-      <span>Local Document Organizer Agent · by sj</span>
-    </nav>
+      <span>11주차 기말 프로젝트 한 장 요약</span>
+    </div>
 
     <header class="hero">
       <div class="hero-text">
-        <div class="tag">📁 AI 기반 로컬 문서 정리 웹앱</div>
+        <div class="badge">본인 기말 프로젝트</div>
         <h1>Local Document<br />Organizer Agent</h1>
-        <p class="lead">
-          TXT, Markdown, PDF 문서를 업로드하면 AI가 문서 유형을 분류하고
-          핵심 키워드, 요약, 추천 파일명, 중복 후보를 한 번에 정리해 주는 문서 정리 보조 도구입니다.
+        <p class="subtitle">
+          문서를 업로드하면 AI가 문서 유형, 핵심 키워드, 추천 파일명, 요약, 중복 후보를 정리해 주는
+          로컬 문서 정리 웹 애플리케이션입니다.
         </p>
 
         <div class="actions">
           <a class="btn primary" href="https://s23-demo.aiweb2026.site/" target="_blank" rel="noopener noreferrer">▶ 실행하기</a>
           <a class="btn" href="https://github.com/lightleaping/local-document-organizer-agent" target="_blank" rel="noopener noreferrer">⌨ GitHub 보기</a>
         </div>
-
-        <div class="mini-meta">
-          <div>
-            <strong>Input</strong>
-            <span>TXT · Markdown · PDF</span>
-          </div>
-          <div>
-            <strong>AI</strong>
-            <span>문서 분류 · 요약</span>
-          </div>
-          <div>
-            <strong>Output</strong>
-            <span>파일명 · 리포트</span>
-          </div>
-        </div>
       </div>
 
-      <div class="hero-image">
+      <div class="hero-shot">
         <img src="screenshot.png" alt="Local Document Organizer Agent 실행 화면" />
       </div>
     </header>
 
+    <div class="notice">
+      <p>
+        이 페이지는 AI웹융합 기말 프로젝트를 소개하기 위한 한 장 요약 페이지입니다.
+        실행 화면, 프로젝트 개요, 핵심 기능, 기술 스택, 완료 조건을 한눈에 확인할 수 있도록 구성했습니다.
+      </p>
+    </div>
+
     <div class="summary-grid">
       <article class="summary-card">
-        <h3>트랙</h3>
-        <p>HF 모델 매시업 또는 자유 구성형 AI 웹 프로젝트</p>
+        <h3>한 줄 요약</h3>
+        <p>TXT, Markdown, PDF 문서를 업로드하면 AI가 문서 정리 정보를 자동 생성하는 웹앱</p>
       </article>
       <article class="summary-card">
-        <h3>인프라</h3>
-        <p>웹 소개 페이지와 실행 데모 페이지를 분리해 구성</p>
+        <h3>사용자</h3>
+        <p>프로젝트·과제·포트폴리오 문서를 자주 정리해야 하는 학생 또는 신입 개발자</p>
       </article>
       <article class="summary-card">
-        <h3>핵심 목표</h3>
-        <p>문서를 하나씩 열어보지 않아도 정리 방향을 빠르게 파악</p>
+        <h3>완료 기준</h3>
+        <p>문서 업로드 후 유형, 키워드, 요약, 추천 파일명, 중복 후보가 화면에 출력됨</p>
       </article>
     </div>
 
-    <section class="note">
+    <section>
       <h2>한 줄 요약</h2>
       <p>
         사용자가 TXT, Markdown, PDF 문서를 업로드하면 AI가 문서 유형, 핵심 키워드, 요약,
@@ -504,12 +468,33 @@
       </p>
     </section>
 
-    <section class="two-col">
-      <div>
+    <div class="two">
+      <section>
+        <h2>트랙</h2>
+        <div class="track-list">
+          <div class="track-item">☐ A. LLM API 챗봇</div>
+          <div class="track-item selected">☑ B. HF 모델 매시업 / 로컬 모델 기반 문서 분석</div>
+          <div class="track-item">☐ C. 외부 API + LLM</div>
+          <div class="track-item">☐ 자유</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>인프라 트랙</h2>
+        <div class="track-list">
+          <div class="track-item selected">☑ 웹 소개 페이지: s23.aiweb2026.site</div>
+          <div class="track-item selected">☑ 실행 데모 페이지: s23-demo.aiweb2026.site</div>
+          <div class="track-item">☐ HF Spaces 또는 OCI 배포 환경과 연동 가능</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="two">
+      <section>
         <h2>문제</h2>
         <p>
-          프로젝트와 과제를 진행하다 보면 README, 기획서, 학습자료, 포트폴리오, TODO 문서처럼
-          다양한 파일이 계속 쌓입니다.
+          개발 프로젝트와 과제를 진행하다 보면 README, 기획서, 학습자료, 포트폴리오,
+          TODO 문서처럼 다양한 파일이 계속 쌓입니다.
         </p>
         <p>
           시간이 지나면 파일명만 보고는 어떤 문서가 최신인지, 어떤 프로젝트에 해당하는지,
@@ -518,9 +503,9 @@
         <p>
           이 프로젝트는 문서 내용을 AI가 분석해 사용자가 더 빠르고 체계적으로 파일을 정리할 수 있도록 돕습니다.
         </p>
-      </div>
+      </section>
 
-      <div>
+      <section>
         <h2>사용자</h2>
         <p>
           주 사용자는 과제, 프로젝트, 포트폴리오, 학습 자료를 자주 정리해야 하는 학생 또는 신입 개발자입니다.
@@ -528,32 +513,26 @@
         <p>
           여러 개의 README, PDF, Markdown 파일을 관리하면서 문서의 성격과 핵심 내용을 빠르게 파악하고 싶은 사용자를 대상으로 합니다.
         </p>
-      </div>
-    </section>
+      </section>
+    </div>
 
     <section>
       <h2>핵심 기능</h2>
-      <div class="feature-list">
+      <div class="features">
         <div class="feature">
-          <div class="num">1</div>
-          <div>
-            <h3>문서 유형 분류</h3>
-            <p>문서 내용과 구조를 바탕으로 README, 기획서, 학습자료, 포트폴리오, TODO 등으로 분류합니다.</p>
-          </div>
+          <div class="feature-number">1</div>
+          <h3>문서 유형 분류</h3>
+          <p>문서 내용과 구조를 바탕으로 README, 기획서, 학습자료, 포트폴리오, TODO 등으로 분류합니다.</p>
         </div>
         <div class="feature">
-          <div class="num">2</div>
-          <div>
-            <h3>핵심 키워드·요약·추천 파일명 생성</h3>
-            <p>문서에서 중요한 표현을 추출하고, 주요 내용을 요약하며, 정리하기 쉬운 파일명을 제안합니다.</p>
-          </div>
+          <div class="feature-number">2</div>
+          <h3>요약·키워드·파일명 생성</h3>
+          <p>문서의 핵심 내용을 요약하고, 중요한 키워드와 정리하기 쉬운 추천 파일명을 생성합니다.</p>
         </div>
         <div class="feature">
-          <div class="num">3</div>
-          <div>
-            <h3>중복 후보 탐지 및 Markdown 리포트</h3>
-            <p>여러 문서 간 유사도를 비교해 중복 후보를 표시하고, 전체 분석 결과를 Markdown 리포트로 제공합니다.</p>
-          </div>
+          <div class="feature-number">3</div>
+          <h3>중복 후보·리포트 생성</h3>
+          <p>여러 문서 간 유사도를 비교해 중복 후보를 찾고, 분석 결과를 Markdown 리포트로 제공합니다.</p>
         </div>
       </div>
     </section>
@@ -561,20 +540,20 @@
     <section>
       <h2>입력 → AI 처리 → 출력</h2>
       <div class="flow">
-        <div class="flow-item">
-          <strong>01 입력</strong>
+        <div class="flow-step">
+          <strong>입력</strong>
           <span>사용자가 TXT, Markdown, PDF 문서를 업로드합니다.</span>
         </div>
-        <div class="flow-item">
-          <strong>02 텍스트 추출</strong>
+        <div class="flow-step">
+          <strong>텍스트 추출</strong>
           <span>문서에서 텍스트를 추출하고 분석 가능한 형태로 변환합니다.</span>
         </div>
-        <div class="flow-item">
-          <strong>03 AI 처리</strong>
+        <div class="flow-step">
+          <strong>AI 처리</strong>
           <span>문서 유형 분류, 키워드 추출, 요약, 추천 파일명 생성을 수행합니다.</span>
         </div>
-        <div class="flow-item">
-          <strong>04 출력</strong>
+        <div class="flow-step">
+          <strong>출력</strong>
           <span>분석 결과와 중복 후보, Markdown 리포트를 화면에 표시합니다.</span>
         </div>
       </div>
@@ -582,20 +561,20 @@
 
     <section>
       <h2>기술 스택</h2>
-      <div class="chips">
-        <span class="chip">Streamlit</span>
-        <span class="chip">Python</span>
-        <span class="chip">PyMuPDF</span>
-        <span class="chip">SentenceTransformer</span>
-        <span class="chip">Local Embedding</span>
-        <span class="chip">Text Similarity</span>
-        <span class="chip">Extractive Summary</span>
-        <span class="chip">Markdown Report</span>
+      <div class="stack">
+        <span>UI: Streamlit</span>
+        <span>Language: Python</span>
+        <span>PDF 처리: PyMuPDF</span>
+        <span>모델: SentenceTransformer</span>
+        <span>문서 분류: 임베딩 유사도 + 규칙 기반 보정</span>
+        <span>요약: 핵심 문장 기반 추출형 요약</span>
+        <span>중복 탐지: Text Similarity</span>
+        <span>출력: Markdown Report</span>
       </div>
     </section>
 
-    <section class="two-col">
-      <div>
+    <div class="two">
+      <section>
         <h2>데이터 출처</h2>
         <p>
           사용자가 직접 업로드하는 TXT, Markdown, PDF 문서를 입력 데이터로 사용합니다.
@@ -603,34 +582,47 @@
         </p>
         <p>
           저작권 또는 개인정보 문제가 있는 문서는 사용하지 않으며,
-          기본 모드에서는 외부 API로 문서 내용이 전송되지 않도록 구성했습니다.
+          기본 모드에서는 외부 API로 문서 내용이 전송되지 않도록 구성합니다.
         </p>
-      </div>
+      </section>
 
-      <div>
+      <section>
         <h2>완료 조건</h2>
         <p>
           앱 실행 후 TXT, Markdown, PDF 샘플 문서를 업로드하면 각 문서에 대해
-          문서 유형, 핵심 키워드, 요약, 추천 파일명, 중복 후보 여부, Markdown 리포트가 화면에 출력됩니다.
+          문서 유형, 핵심 키워드, 요약, 추천 파일명, 중복 후보 여부,
+          Markdown 리포트가 화면에 출력됩니다.
         </p>
-      </div>
-    </section>
+      </section>
+    </div>
 
     <section>
       <h2>적격성 체크리스트</h2>
       <div class="checklist">
-        <div class="check">✓ AI 기능이 핵심에 있음</div>
-        <div class="check">✓ inference 중심 구조</div>
-        <div class="check">✓ 문서 업로드 후 분석 결과 출력</div>
-        <div class="check">✓ 영구 저장 없이 사용 가능</div>
-        <div class="check">✓ 데이터 출처는 사용자 직접 업로드 문서</div>
-        <div class="check">✓ GitHub와 웹페이지로 결과 확인 가능</div>
+        <div class="check selected">☑ AI 기능이 핵심에 있음</div>
+        <div class="check selected">☑ inference만 필요</div>
+        <div class="check selected">☑ 모델 1GB 이하 또는 외부 API 호출 조건 대응 가능</div>
+        <div class="check selected">☑ 한 요청 30초 이내를 목표로 구성</div>
+        <div class="check selected">☑ 영구 저장 불필요</div>
+        <div class="check selected">☑ 데이터 출처 적격</div>
+        <div class="check selected">☑ GitHub와 웹페이지로 유지 가능</div>
+        <div class="check selected">☑ 완료 조건 한 줄로 명확</div>
       </div>
+    </section>
+
+    <section>
+      <h2>메모</h2>
+      <ul>
+        <li>피어 피드백 1:</li>
+        <li>피어 피드백 2:</li>
+        <li>강사 판정: ○ / △ / ✗</li>
+        <li>강사 코멘트:</li>
+      </ul>
     </section>
 
     <footer>
       © 2026 sj · Local Document Organizer Agent
     </footer>
-  </div>
+  </main>
 </body>
 </html>
