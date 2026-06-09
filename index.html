@@ -3,37 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Local Document Organizer Agent — by sj</title>
-  <meta name="description" content="TXT, Markdown, PDF 문서를 업로드하면 SentenceTransformer 임베딩 모델로 문서 의미를 분석해 유형 분류, 키워드, 요약, 추천 파일명, 중복 후보를 제공하는 AI 웹 데모입니다." />  <link rel="stylesheet" href="style.css" />
+
+  <title>Structured Bloom — AI웹융합 과제</title>
+  <meta name="description" content="현재 기분과 사용 가능한 시간을 바탕으로 작고 실천 가능한 회복 활동을 추천하는 AI웹융합 과제용 웹 MVP입니다." />
+
+  <link rel="stylesheet" href="style.css" />
   <script type="module" src="https://cdn.jsdelivr.net/npm/zero-md@3?register"></script>
 </head>
+
 <body>
   <header class="hero">
     <div class="container">
-      <h1>🚀 Local Document Organizer Agent</h1>
+      <p class="eyebrow">2026 AI웹융합 과제</p>
+      <h1>Structured Bloom</h1>
       <p class="tagline">
-        TXT, Markdown, PDF 문서를 업로드하면 SentenceTransformer 임베딩 모델로 문서 의미를 분석해
-        유형 분류, 핵심 키워드, 요약, 추천 파일명, 중복 후보를 제공하는 AI 웹 애플리케이션입니다.
+        현재 기분과 사용 가능한 시간을 바탕으로<br />
+        작고 실천 가능한 회복 활동을 추천하는 웹 서비스
       </p>
-    </div>
-  </header>
 
-  <main class="container">
-    <section class="demo-card">
-      <img class="screenshot" src="screenshot.png" alt="Local Document Organizer Agent 데모 화면" />
-
-      <div class="cta">
-        <a class="btn btn-primary" href="https://skyleaping-local-document-organizer-agent.hf.space" target="_blank" rel="noopener">
-          ▶ 실행 데모 열기
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#project-content">
+          📄 프로젝트 내용 보기
         </a>
 
         <a class="btn btn-secondary" href="https://github.com/lightleaping/s23.aiweb2026.site" target="_blank" rel="noopener">
           ⌨ Source on GitHub
         </a>
       </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="preview-card" aria-label="Structured Bloom 소개">
+      <div class="preview-top">
+        <span class="pill">Mood</span>
+        <span class="pill">Time</span>
+        <span class="pill">Recovery</span>
+      </div>
+
+      <h2>쉬어야 하는데 무엇을 해야 할지 모를 때</h2>
+      <p>
+        Structured Bloom은 사용자가 복잡한 계획을 세우지 않아도,
+        현재 상태와 가능한 시간에 맞는 작은 활동을 추천합니다.
+      </p>
+
+      <div class="mock-result">
+        <p class="mock-label">추천 예시</p>
+        <strong>10분 동안 책상 위에서 가장 눈에 띄는 물건 3개만 정리해보세요.</strong>
+        <span>작은 정리는 생각의 과부하를 줄이고 다음 행동을 시작하기 쉽게 만듭니다.</span>
+      </div>
     </section>
 
-    <section class="content">
+    <section id="project-content" class="content">
       <zero-md src="contents.md" no-shadow></zero-md>
     </section>
 
@@ -65,7 +86,7 @@
   <footer>
     <div class="container">
       <p>
-        2026 AI 웹 융합 · 데모 소개 페이지 ·
+        2026 AI웹융합 · Structured Bloom ·
         <a href="https://aiweb2026.site">aiweb2026.site</a>
       </p>
     </div>

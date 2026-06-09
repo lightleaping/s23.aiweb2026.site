@@ -1,479 +1,150 @@
-# Local Document Organizer Agent
+# Structured Bloom
 
-로컬 문서를 업로드하면 문서 유형을 분류하고, 핵심 키워드, 추천 파일명, 요약, 중복 후보, Markdown 리포트를 생성하는 문서 정리 자동화 Agent입니다.
-
-이 프로젝트는 단순히 파일명을 바꾸는 도구가 아니라, 문서에서 추출한 텍스트를 기반으로 **텍스트 품질 검사 → 로컬 임베딩 기반 문서 유형 분류 → 키워드 추출 → 요약 생성 → 중복 후보 탐지 → Markdown 리포트 생성**까지 이어지는 문서 처리 workflow를 구현한 프로젝트입니다.
-
-기본 모드는 외부 API 없이 동작하며, 선택적으로 Ollama 기반 로컬 LLM 요약 모드를 사용할 수 있도록 구성했습니다.
-
----
+Structured Bloom은 사용자의 현재 기분과 사용 가능한 시간을 바탕으로  
+가볍게 실천할 수 있는 회복 활동을 추천하는 웹 서비스입니다.
 
 ## 1. Project Overview
 
-Local Document Organizer Agent는 TXT, Markdown, PDF 문서를 업로드하면 다음 정보를 자동으로 정리합니다.
+현대인은 쉬어야 한다는 것을 알면서도, 막상 시간이 생기면 무엇을 해야 할지 모르는 경우가 많습니다.  
+Structured Bloom은 사용자가 현재의 기분과 여유 시간을 선택하면, 상황에 맞는 작은 회복 활동을 추천해주는 서비스입니다.
 
-- 문서 유형
-- 문서 제목
-- 핵심 키워드
-- 추천 파일명
-- 요약
-- 중복 의심 문서
-- Markdown 리포트
+이 프로젝트는 AI웹융합 과제용 MVP로 제작되었으며, 복잡한 입력 없이 간단한 선택만으로 사용자에게 맞는 활동을 제안하는 것을 목표로 합니다.
 
-초기 버전은 규칙 기반 문서 유형 판정과 단순 키워드 추출을 사용했습니다. 그러나 다양한 문서를 테스트하면서 다음 문제가 확인되었습니다.
+## 2. Main Concept
 
-- 같은 이름의 `README.md` 파일 2개를 구분하지 못함
-- README 문서가 다른 문서 유형으로 오분류됨
-- Mermaid 구조도 코드가 요약에 섞임
-- PDF에서 글자 인코딩이 깨진 경우에도 무리하게 요약함
-- 문서 유형이 다양해질수록 profile을 계속 추가해야 함
-- 요약 품질이 단순 문장 추출에 의존함
+Structured Bloom의 핵심은 사용자가 직접 복잡한 계획을 세우지 않아도 된다는 점입니다.
 
-이를 개선하기 위해 다음 구조로 재설계했습니다.
+사용자는 현재 상태와 가능한 시간만 선택합니다.  
+서비스는 그 조건을 바탕으로 다음과 같은 활동을 추천합니다.
 
-- 같은 이름 파일 구분을 위한 `document_id` 및 unique display name 생성
-- PDF/TXT/Markdown 텍스트 품질 검사
-- 로컬 SentenceTransformer 임베딩 기반 문서 유형 분류
-- 넓은 범주의 문서 유형 분류 체계 적용
-- README 내 프로젝트명 감지 및 프로젝트별 파일명 추천
-- Markdown/Mermaid/code block 정리
-- 기본 추출형 요약 + 선택적 Ollama 로컬 LLM 요약 모드
-- Streamlit UI 및 Markdown 리포트 생성
-
----
-
-## 2. Demo Screenshots
-
-### Streamlit Main Result
-
-문서를 업로드하면 문서 수, 중복 후보 수, 키워드 수가 표시되고, 각 문서별 분석 결과가 카드 형태로 출력됩니다.  
-같은 이름의 `README.md` 파일을 여러 개 업로드해도 내부 표시명을 다르게 생성해 각각 분석합니다.
-
-![Streamlit main result](docs/images/streamlit_main_result.png)
-
----
-
-### Markdown Report Result
-
-분석 결과는 Markdown 리포트로 자동 정리되며, Streamlit 화면에서 미리보기와 다운로드가 가능합니다.  
-로컬 LLM 요약 옵션을 사용한 경우에도 동일한 리포트 구조로 결과가 정리됩니다.
-
----
+- 짧은 휴식
+- 가벼운 정리
+- 감각 전환
+- 간단한 움직임
+- 생각 비우기
+- 집중 회복
 
 ## 3. Key Features
 
 | Feature | Description |
 |---|---|
-| Multi-file Upload | TXT, Markdown, PDF 문서 여러 개 업로드 |
-| Same Filename Handling | 같은 이름의 파일도 unique display name으로 구분 |
-| Text Quality Check | 깨진 PDF/TXT는 자동 분석하지 않고 확인 필요 문서로 분리 |
-| Local Embedding Classification | SentenceTransformer 기반 로컬 문서 유형 분류 |
-| Broad Document Categories | README, 기획서, 포트폴리오, 학습자료, 시나리오, 시간표, TODO 등 넓은 유형 분류 |
-| Keyword Extraction | domain phrase + token 기반 핵심 키워드 추출 |
-| Project Name Detection | README 내부 프로젝트명을 감지해 제목/파일명/키워드 보정 |
-| Filename Recommendation | 문서 유형 또는 프로젝트명 기반 추천 파일명 생성 |
-| Summary Generation | 기본 추출형 요약과 선택적 로컬 LLM 요약 지원 |
-| Duplicate Detection | 문서 간 유사도를 계산해 중복 후보 표시 |
-| Markdown Report | 분석 결과를 Markdown 리포트로 생성 및 다운로드 |
-
----
+| Mood Selection | 현재 기분이나 상태를 선택합니다. |
+| Time Selection | 사용 가능한 시간을 선택합니다. |
+| Activity Recommendation | 입력 조건에 맞는 활동을 추천합니다. |
+| Simple Result UI | 추천 결과를 카드 형태로 보여줍니다. |
+| Responsive UI | PC와 모바일 화면에서 사용할 수 있도록 구성했습니다. |
 
 ## 4. Workflow
 
-```text
-Uploaded Documents
-        ↓
-Document Loader
-        ↓
-Text Extraction
-        ↓
-Text Quality Check
-        ↓
-Local Embedding-based Document Classification
-        ↓
-Keyword Extraction
-        ↓
-Project Name Detection
-        ↓
-Summary Generation
-   ├─ Basic Extractive Summary
-   └─ Optional Local LLM Summary via Ollama
-        ↓
-Filename Recommendation
-        ↓
-Duplicate Candidate Detection
-        ↓
-Markdown Report Generation
+```txt
+User Input
+  ↓
+Mood / Time Selection
+  ↓
+Condition Matching
+  ↓
+Activity Recommendation
+  ↓
+Result Card Display
 ```
 
----
-
-## 5. Architecture
-
-```mermaid
-flowchart TD
-    A[Upload TXT / Markdown / PDF] --> B[Document Loader]
-    B --> C[Text Extraction]
-    C --> D[Text Quality Check]
-
-    D -->|Valid Text| E[Local Embedding Classifier]
-    D -->|Broken Text| F[Extraction Check Needed]
-
-    E --> G[Keyword Extractor]
-    E --> H[Project Name Detector]
-    G --> I[Filename Recommender]
-    H --> I
-
-    E --> J{Summary Mode}
-    J -->|Default| K[Extractive Summary]
-    J -->|Optional| L[Ollama Local LLM Summary]
-    L -->|Fail| K
-
-    K --> M[Document Analysis Card]
-    L --> M
-    I --> M
-
-    M --> N[Duplicate Detector]
-    N --> O[Markdown Report]
-```
-
----
-
-## 6. Document Type Categories
-
-문서 유형은 너무 세부적인 profile을 계속 추가하는 방식이 아니라, 넓은 범주 기반으로 분류합니다.
-
-| Document Type | Description |
-|---|---|
-| 프로젝트 README / 기술 문서 | GitHub README, 실행 방법, 기술 스택, 구조 설명 문서 |
-| 기획서 / 제안서 | 문제 정의, 접근 방식, 모델 구조, 기대효과, 평가 방법을 담은 문서 |
-| 포트폴리오 / 자기소개서 | 취업 포트폴리오, 자기소개서, 프로젝트 경험 정리 문서 |
-| 학습 자료 | 수업자료, 개념 설명, 용어 정리, 학습 노트 |
-| 시나리오 / 대화 스크립트 | 서비스 시나리오, 사용자 발화, 선택지, AI 응답 흐름 |
-| 일정 / 시간표 자료 | 수강신청, 시간표, 일정 문서 |
-| 구현 TODO / 작업 목록 | 미구현 기능, 보완 사항, 개발 체크리스트 |
-| 일반 문서 | 특정 유형으로 분류하기 어려운 일반 텍스트 문서 |
-| 텍스트 추출 확인 필요 | PDF 인코딩 깨짐, 이미지 기반 PDF 등 자동 분석이 어려운 문서 |
-
----
-
-## 7. Project Name Detection
-
-README 문서는 모두 같은 `프로젝트 README / 기술 문서` 유형으로 분류되지만, 실제 프로젝트명은 문서 내부 내용을 기반으로 별도 감지합니다.
-
-지원 예시:
-
-- Multimodal Intent QA Agent
-- Course Study RAG Tutor
-- Local Document Organizer Agent
-- Manufacturing MCP Agent
-- Sensor Anomaly Model Pipeline
-- AI 의결서 RAG
-- Fair Decision RAG
-- Biz-English
-
-예를 들어 같은 이름의 `README.md` 2개를 업로드해도 다음처럼 구분됩니다.
-
-```text
-README.md
-→ Course Study RAG Tutor README 정리
-→ course_study_rag_tutor_readme.md
-
-README_2_xxxxxx.md
-→ Multimodal Intent QA Agent README 정리
-→ multimodal_intent_qa_agent_readme.md
-```
-
----
-
-## 8. Text Quality Check
-
-일부 PDF는 텍스트가 추출되더라도 실제 내용이 깨져 나올 수 있습니다.
-
-예:
-
-```text
-RAG lp| ¬©‹Ÿﬂ? AI X°˝ R RAG Project ...
-```
-
-이런 경우에는 무리하게 요약하지 않고 다음과 같이 처리합니다.
-
-```text
-문서 유형: 텍스트 추출 확인 필요
-문서 제목: 텍스트 추출 실패 문서
-핵심 키워드: 추출 불가
-추천 파일명: extraction_check_needed.pdf
-요약: 문서에서 읽을 수 있는 텍스트가 충분히 추출되지 않아 자동 요약을 생성하지 않았습니다.
-```
-
-이 기능은 잘못된 요약을 생성하지 않기 위한 안전 장치입니다.
-
----
-
-## 9. Summary Modes
-
-### Default Mode
-
-기본 모드는 외부 API 없이 동작합니다.
-
-```text
-Local Embedding Classification
-+ Keyword Extraction
-+ Heading-aware / Type-aware Extractive Summary
-```
-
-기본 모드의 장점:
-
-- 외부 API 불필요
-- 실행 환경이 단순함
-- 포트폴리오 시연에 안정적
-- LLM이 없어도 기본 기능 동작
-
-### Optional Local LLM Mode
-
-Ollama가 설치된 환경에서는 선택적으로 로컬 LLM 요약을 사용할 수 있습니다.
-
-```text
-Ollama Local LLM
-qwen2.5:1.5b / llama3.2:1b / gemma2:2b
-```
-
-LLM 호출이 실패하면 기본 추출형 요약으로 자동 대체됩니다.
-
----
-
-## 10. Tech Stack
+## 5. Tech Stack
 
 | Category | Stack |
 |---|---|
-| Language | Python |
-| UI | Streamlit |
-| PDF Parsing | PyMuPDF |
-| Embedding Model | sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
-| Classification | Local embedding similarity + rule boost |
-| Keyword Extraction | Domain phrase + token frequency |
-| Optional LLM | Ollama local model |
-| Report | Markdown |
-| Duplicate Detection | Text similarity-based duplicate candidate detection |
+| Frontend | React, JavaScript, CSS, Vite |
+| Backend | Python, FastAPI |
+| Introduction Page | HTML, CSS, zero-md |
+| Deployment | GitHub, s23.aiweb2026.site |
+| Version Control | Git, GitHub |
 
----
-
-## 11. Project Structure
-
-```text
-local-document-organizer-agent/
-├─ app.py
-├─ main.py
-├─ requirements.txt
-├─ README.md
-├─ docs/
-│  └─ images/
-│     ├─ streamlit_main_result.png
-│     └─ document_analysis_result.png
-├─ sample_docs/
-├─ reports/
-└─ src/
-   ├─ document_loader.py
-   ├─ document_analyzer.py
-   ├─ profile_classifier.py
-   ├─ project_utils.py
-   ├─ keyword_extractor.py
-   ├─ summarizer.py
-   ├─ llm_summarizer.py
-   ├─ text_quality.py
-   ├─ duplicate_detector.py
-   ├─ file_renamer.py
-   ├─ report_generator.py
-   └─ __init__.py
-```
-
----
-
-## 12. Core Modules
-
-| File | Role |
-|---|---|
-| `app.py` | Streamlit UI, upload flow, result cards, Markdown report |
-| `document_loader.py` | TXT/Markdown/PDF loading, same filename handling, document_id generation |
-| `text_quality.py` | broken text / extraction quality detection |
-| `profile_classifier.py` | local embedding-based document type classification |
-| `project_utils.py` | project name detection and README filename generation |
-| `keyword_extractor.py` | Markdown cleanup, tokenization, domain phrase keyword extraction |
-| `summarizer.py` | default type-aware extractive summary |
-| `llm_summarizer.py` | optional Ollama local LLM summary |
-| `document_analyzer.py` | analysis pipeline orchestration |
-| `duplicate_detector.py` | duplicate candidate detection |
-| `report_generator.py` | legacy Markdown report generator |
-
----
-
-## 13. Installation
-
-```bash
-pip install -r requirements.txt
-```
-
-`requirements.txt`
+## 6. Project Structure
 
 ```txt
-streamlit
-PyMuPDF
-sentence-transformers
-numpy
+structured-bloom/
+├── backend/
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   ├── package.json
+│   └── vite.config.js
+├── README.md
+└── contents.md
 ```
 
----
+## 7. How to Run
 
-## 14. How to Run
+### Frontend
 
 ```bash
-streamlit run app.py --server.fileWatcherType none
+cd frontend
+npm install
+npm run dev
 ```
 
-`--server.fileWatcherType none` 옵션은 Streamlit이 `sentence-transformers` 관련 내부 모듈을 감시하면서 발생할 수 있는 불필요한 watcher 경고를 줄이기 위해 사용합니다.
+Local URL:
 
----
+```txt
+http://localhost:5173
+```
 
-## 15. Optional Local LLM Setup
-
-Ollama가 설치된 환경에서는 로컬 LLM 요약 모드를 사용할 수 있습니다.
+### Backend
 
 ```bash
-ollama pull qwen2.5:1.5b
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
 ```
 
-앱 실행 후 Streamlit 사이드바에서 다음 옵션을 체크합니다.
+백엔드 실행 파일명은 실제 프로젝트 구조에 따라 다를 수 있습니다.
 
-```text
-로컬 LLM 요약 사용
-```
+## 8. AI Usage and Future Expansion
 
-Ollama가 없거나 모델 호출에 실패해도 앱은 중단되지 않으며, 기본 추출형 요약으로 자동 대체됩니다.
+현재 MVP는 사용자의 선택값을 기준으로 사전에 구성된 추천 데이터를 반환하는 방식입니다.  
+즉, 현재 버전에서는 외부 AI API를 필수로 사용하지 않고, 추천 서비스의 기본 흐름을 먼저 구현했습니다.
 
----
+향후에는 다음과 같은 AI 기능으로 확장할 수 있습니다.
 
-## 16. Verified Results
+- 사용자의 감정 상태에 맞는 자연어 추천 문장 생성
+- 사용자의 이전 선택 기록을 기반으로 한 개인화 추천
+- 활동 완료 후 피드백 분석
+- 감정 변화 흐름 분석
+- 상황별 회복 루틴 자동 생성
 
-### Same Filename Upload
+## 9. Service URL
 
-같은 이름의 파일을 업로드해도 각각 다른 문서로 인식합니다.
+https://s23.aiweb2026.site
 
-```text
-README.md
-README_2_541137.md
-```
+## 10. My Role
 
-### Example Result 1
+- 서비스 아이디어 기획
+- 사용자 입력 구조 설계
+- 추천 결과 데이터 구성
+- React 기반 화면 구현
+- CSS 기반 UI 디자인
+- FastAPI 백엔드 구조 구성
+- GitHub 업로드 및 과제 제출용 문서 정리
 
-```text
-문서 제목:
-Course Study RAG Tutor README 정리
+## 11. Limitations
 
-문서 유형:
-프로젝트 README / 기술 문서
+현재 버전은 MVP 단계이기 때문에 다음과 같은 한계가 있습니다.
 
-추천 파일명:
-course_study_rag_tutor_readme.md
+- 실제 사용자 기록 저장 기능은 포함하지 않았습니다.
+- 추천 결과는 사전 정의된 데이터 기반으로 제공됩니다.
+- 실제 LLM 또는 감정 분석 모델은 아직 연동하지 않았습니다.
+- 로그인, 데이터베이스, 장기 기록 분석 기능은 포함하지 않았습니다.
 
-핵심 키워드:
-Course Study RAG Tutor, RAG, README, 프로젝트, Intent
-```
+## 12. Future Improvements
 
-### Example Result 2
+- 사용자 기록 저장 기능 추가
+- 활동 완료 여부 체크 기능 추가
+- 감정 변화 시각화
+- LLM 기반 추천 문장 생성
+- 모바일 웹앱 형태로 확장
+- 개인별 회복 루틴 추천 기능 추가
 
-```text
-문서 제목:
-Multimodal Intent QA Agent README 정리
+## 13. Project Summary
 
-문서 유형:
-프로젝트 README / 기술 문서
+Structured Bloom은 사용자의 기분과 여유 시간을 바탕으로 작고 실천 가능한 회복 활동을 추천하는 웹 서비스입니다.
 
-추천 파일명:
-multimodal_intent_qa_agent_readme.md
-
-핵심 키워드:
-Multimodal Intent QA Agent, RAG, AI Agent, Agent Workflow
-```
-
-### Broken PDF Handling
-
-깨진 텍스트가 감지되면 다음과 같이 처리합니다.
-
-```text
-문서 유형:
-텍스트 추출 확인 필요
-
-핵심 키워드:
-추출 불가
-
-추천 파일명:
-extraction_check_needed.pdf
-```
-
----
-
-## 17. Development Notes
-
-이 프로젝트는 단순 파일 정리 도구에서 시작해, 문서 처리 Agent 구조로 확장되었습니다.
-
-개선 과정에서 해결한 문제는 다음과 같습니다.
-
-| Problem | Improvement |
-|---|---|
-| 같은 이름 파일이 덮어써지는 문제 | unique display name, document_id 생성 |
-| README 문서가 다른 유형으로 오분류됨 | 로컬 임베딩 기반 넓은 카테고리 분류 |
-| 프로젝트별 README 구분이 어려움 | project name detector 추가 |
-| Mermaid 구조도 코드가 요약에 섞임 | Markdown/code block cleanup 강화 |
-| 깨진 PDF를 무리하게 요약함 | text quality check 추가 |
-| 요약 품질이 낮음 | type-aware summary + optional local LLM mode |
-| report_generator signature 문제 | app.py 내부 Markdown report 생성으로 안정화 |
-
----
-
-## 18. My Role
-
-- 로컬 문서 로딩 구조 구현
-- TXT/Markdown/PDF 문서 파싱
-- 같은 파일명 업로드 처리 개선
-- 텍스트 품질 검사 로직 추가
-- 로컬 임베딩 기반 문서 유형 분류 구조 설계
-- 프로젝트명 감지 기반 README 분석 개선
-- 핵심 키워드 추출 로직 개선
-- 기본 추출형 요약 및 선택적 로컬 LLM 요약 구조 설계
-- 중복 후보 탐지 결과 UI 표시
-- Streamlit UI 구성
-- Markdown 리포트 생성 흐름 구현
-- 오류 사례 기반 개선 반복
-
----
-
-## 19. What I Learned
-
-이 프로젝트를 통해 문서 자동화 Agent에서 중요한 것은 단순히 LLM을 붙이는 것이 아니라, 입력 문서의 품질을 먼저 확인하고, 문서 유형과 목적에 맞게 처리 흐름을 분리하는 것임을 확인했습니다.
-
-특히 PDF나 Markdown 문서에서는 텍스트 추출 결과가 항상 정상적이지 않기 때문에, 요약이나 분류 전에 텍스트 품질 검사 단계가 필요했습니다. 또한 문서 유형을 세부 profile로 계속 추가하는 방식보다, 로컬 임베딩을 활용해 넓은 범주로 분류하고 필요한 경우 프로젝트명을 별도로 감지하는 방식이 더 안정적이라는 점을 확인했습니다.
-
----
-
-## 20. Limitations & Future Improvements
-
-- PDF OCR 지원 추가
-- 이미지 기반 PDF 처리
-- 중복 탐지 기준 세분화
-- 문서 유형별 confidence score UI 표시
-- Local LLM 요약 결과와 기본 요약 비교 표시
-- 폴더 단위 일괄 분석 기능 강화
-- 추천 파일명 실제 rename 기능 추가
-- 분석 결과 JSON export 추가
-- 테스트 코드 추가
-- Docker 실행 환경 구성
-
----
-
-## 21. Interview Summary
-
-Local Document Organizer Agent는 로컬 문서를 업로드하면 문서 유형 분류, 핵심 키워드 추출, 추천 파일명 생성, 요약, 중복 후보 탐지, Markdown 리포트 생성을 수행하는 문서 자동화 Agent입니다.
-
-초기에는 규칙 기반 문서 유형 판정과 빈도 기반 키워드 추출을 사용했지만, 다양한 문서에서 오분류와 낮은 요약 품질이 발생했습니다. 이를 개선하기 위해 텍스트 품질 검사, 로컬 SentenceTransformer 임베딩 기반 문서 유형 분류, 프로젝트명 감지, 같은 이름 파일 구분, 선택적 Ollama 로컬 LLM 요약 모드를 추가했습니다.
-
-이 프로젝트는 LLM을 무조건 사용하는 방식이 아니라, 기본 기능은 외부 API 없이 안정적으로 동작하게 하고, 필요할 때만 로컬 LLM을 선택적으로 사용하도록 설계한 문서 처리 Agent입니다.
+이 프로젝트는 AI웹융합 과제용 MVP로, 사용자의 상태 입력을 기반으로 추천 결과를 제공하는 웹 서비스 구조를 구현하는 데 목적이 있습니다. 현재는 규칙 기반 추천 구조이지만, 향후 AI 모델이나 LLM을 연동하여 개인화된 감정 기반 추천 서비스로 확장할 수 있습니다.
