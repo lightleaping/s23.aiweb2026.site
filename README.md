@@ -10,7 +10,13 @@ Structured Bloom은 사용자가 현재의 기분과 여유 시간을 선택하�
 
 이 프로젝트는 AI웹융합 과제용 MVP로 제작되었으며, 복잡한 입력 없이 간단한 선택만으로 사용자에게 맞는 활동을 제안하는 것을 목표로 합니다.
 
-## 2. Main Concept
+## 2. Service URL
+
+- Introduction Page: https://s23.aiweb2026.site
+- App Page: https://s23.aiweb2026.site/app/
+- GitHub Repository: https://github.com/lightleaping/s23.aiweb2026.site
+
+## 3. Main Concept
 
 Structured Bloom의 핵심은 사용자가 직접 복잡한 계획을 세우지 않아도 된다는 점입니다.
 
@@ -24,7 +30,7 @@ Structured Bloom의 핵심은 사용자가 직접 복잡한 계획을 세우지 
 - 생각 비우기
 - 집중 회복
 
-## 3. Key Features
+## 4. Key Features
 
 | Feature | Description |
 |---|---|
@@ -34,7 +40,7 @@ Structured Bloom의 핵심은 사용자가 직접 복잡한 계획을 세우지 
 | Simple Result UI | 추천 결과를 카드 형태로 보여줍니다. |
 | Responsive UI | PC와 모바일 화면에서 사용할 수 있도록 구성했습니다. |
 
-## 4. Workflow
+## 5. Workflow
 
 ```txt
 User Input
@@ -48,7 +54,7 @@ Activity Recommendation
 Result Card Display
 ```
 
-## 5. Tech Stack
+## 6. Tech Stack
 
 | Category | Stack |
 |---|---|
@@ -58,7 +64,7 @@ Result Card Display
 | Deployment | GitHub, s23.aiweb2026.site |
 | Version Control | Git, GitHub |
 
-## 6. Project Structure
+## 7. Project Structure
 
 ```txt
 structured-bloom/
@@ -68,11 +74,15 @@ structured-bloom/
 │   ├── src/
 │   ├── package.json
 │   └── vite.config.js
+├── app/
 ├── README.md
-└── contents.md
+├── contents.md
+├── index.html
+├── style.css
+└── screenshot.png
 ```
 
-## 7. How to Run
+## 8. How to Run
 
 ### Frontend
 
@@ -98,7 +108,7 @@ uvicorn main:app --reload
 
 백엔드 실행 파일명은 실제 프로젝트 구조에 따라 다를 수 있습니다.
 
-## 8. AI Usage and Future Expansion
+## 9. AI Usage and Future Expansion
 
 현재 MVP는 사용자의 선택값을 기준으로 사전에 구성된 추천 데이터를 반환하는 방식입니다.  
 즉, 현재 버전에서는 외부 AI API를 필수로 사용하지 않고, 추천 서비스의 기본 흐름을 먼저 구현했습니다.
@@ -110,10 +120,6 @@ uvicorn main:app --reload
 - 활동 완료 후 피드백 분석
 - 감정 변화 흐름 분석
 - 상황별 회복 루틴 자동 생성
-
-## 9. Service URL
-
-https://s23.aiweb2026.site
 
 ## 10. My Role
 
@@ -142,9 +148,3 @@ https://s23.aiweb2026.site
 - LLM 기반 추천 문장 생성
 - 모바일 웹앱 형태로 확장
 - 개인별 회복 루틴 추천 기능 추가
-
-## 13. Project Summary
-
-Structured Bloom은 사용자의 기분과 여유 시간을 바탕으로 작고 실천 가능한 회복 활동을 추천하는 웹 서비스입니다.
-
-이 프로젝트는 AI웹융합 과제용 MVP로, 사용자의 상태 입력을 기반으로 추천 결과를 제공하는 웹 서비스 구조를 구현하는 데 목적이 있습니다. 현재는 규칙 기반 추천 구조이지만, 향후 AI 모델이나 LLM을 연동하여 개인화된 감정 기반 추천 서비스로 확장할 수 있습니다.

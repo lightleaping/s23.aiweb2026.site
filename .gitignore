@@ -1,0 +1,7 @@
+
+# local secrets
+.env
+*.env
+backend/.env
+backend/*.env
+

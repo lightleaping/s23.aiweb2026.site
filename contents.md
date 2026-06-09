@@ -13,6 +13,7 @@
 ## 서비스 주소
 
 - 소개 페이지: https://s23.aiweb2026.site
+- 실제 구현 페이지: https://s23.aiweb2026.site/app/
 - GitHub Repository: https://github.com/lightleaping/s23.aiweb2026.site
 
 ---
@@ -153,8 +154,12 @@ structured-bloom/
 │   ├── src/
 │   ├── package.json
 │   └── vite.config.js
+├── app/
 ├── README.md
-└── contents.md
+├── contents.md
+├── index.html
+├── style.css
+└── screenshot.png
 ```
 
 ---

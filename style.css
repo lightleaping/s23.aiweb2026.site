@@ -1,282 +1,215 @@
 /* ============ 디자인 토큰 ============ */
 :root {
-  --accent: #c98f7a;
-  --accent2: #8fb8a8;
-  --accent3: #f3d7c7;
-  --ink: #2f2a2a;
-  --muted: #756b66;
-  --bg: #fffaf7;
+  --accent: #f97316;
+  --accent2: #0ea5e9;
+  --ink: #1a1a2e;
+  --muted: #64748b;
+  --bg: #fafafa;
   --card: #ffffff;
-  --border: #eadbd2;
-  --soft: #f8eee8;
+  --border: #e5e7eb;
+  --green: #10b981;
 
   --space-section: clamp(2.5rem, 2rem + 3vw, 5rem);
-  --container-max: 860px;
-  --radius: 22px;
+  --container-max: 800px;
+  --radius: 12px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --ink: #f8f3ef;
-    --muted: #cdbfb8;
-    --bg: #1f1a18;
-    --card: #2a2421;
-    --border: #4a3c36;
-    --soft: #352b27;
+    --ink: #f8fafc;
+    --muted: #94a3b8;
+    --bg: #0f172a;
+    --card: #1e293b;
+    --border: #334155;
   }
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
-
+/* ============ Base ============ */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   font-family: 'Apple SD Gothic Neo', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background:
-    radial-gradient(circle at 15% 0%, rgba(243, 215, 199, 0.7), transparent 34%),
-    radial-gradient(circle at 90% 10%, rgba(143, 184, 168, 0.35), transparent 30%),
-    var(--bg);
+  background: var(--bg);
   color: var(--ink);
-  line-height: 1.65;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 1.25rem;
+  padding: 0 1.2rem;
 }
 
 /* ============ HERO ============ */
 .hero {
-  padding: clamp(4rem, 3rem + 5vw, 7rem) 0 clamp(3rem, 2rem + 4vw, 5rem);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  color: white;
+  padding: clamp(3rem, 2rem + 5vw, 6rem) 0 clamp(2.5rem, 2rem + 4vw, 5rem);
   text-align: center;
 }
-
-.eyebrow {
-  display: inline-flex;
-  margin: 0 0 1rem;
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  background: rgba(201, 143, 122, 0.13);
-  color: var(--accent);
-  border: 1px solid rgba(201, 143, 122, 0.25);
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
 .hero h1 {
-  margin: 0 0 0.8rem;
-  font-size: clamp(2.4rem, 1.4rem + 4vw, 4.5rem);
-  font-weight: 850;
-  letter-spacing: -0.05em;
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.8rem, 1.2rem + 2.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
-
 .hero .tagline {
-  margin: 0 auto;
-  max-width: 680px;
-  color: var(--muted);
-  font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.3rem);
+  margin: 0;
+  font-size: clamp(1rem, 0.85rem + 0.6vw, 1.25rem);
+  opacity: 0.95;
+  font-weight: 400;
 }
 
-.hero-actions {
-  margin-top: 2rem;
+/* ============ 데모 카드 ============ */
+.demo-card {
+  margin-top: -2.5rem;
+  margin-bottom: var(--space-section);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.screenshot {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #f1f5f9;
+  border-bottom: 1px solid var(--border);
+}
+
+.cta {
+  padding: 1.5rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: center;
 }
 
-/* ============ Buttons ============ */
 .btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 0.4rem;
-  min-height: 46px;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1.4rem;
   border-radius: 999px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.95rem;
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-
-.btn:hover {
-  transform: translateY(-2px);
-}
-
 .btn-primary {
   background: var(--accent);
   color: white;
-  box-shadow: 0 10px 24px rgba(201, 143, 122, 0.25);
 }
-
+.btn-primary[aria-disabled="true"] {
+  background: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.btn-primary:hover:not([aria-disabled="true"]) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(249, 115, 22, 0.35);
+}
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--card);
   color: var(--ink);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
 }
-
 .btn-secondary:hover {
   border-color: var(--accent2);
+  color: var(--accent2);
 }
 
-/* ============ Preview Card ============ */
-.preview-card {
-  margin-top: -1.4rem;
-  margin-bottom: var(--space-section);
-  padding: clamp(1.4rem, 1rem + 2vw, 2.2rem);
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 18px 50px rgba(107, 83, 73, 0.10);
-  backdrop-filter: blur(10px);
-}
-
-.preview-top {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.1rem;
-}
-
-.pill {
-  padding: 0.3rem 0.7rem;
+.badge {
+  background: rgba(255, 255, 255, 0.25);
+  padding: 0.15rem 0.55rem;
   border-radius: 999px;
-  background: var(--soft);
-  color: var(--muted);
-  border: 1px solid var(--border);
-  font-size: 0.82rem;
+  font-size: 0.7rem;
   font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
-.preview-card h2 {
-  margin: 0 0 0.6rem;
-  font-size: clamp(1.45rem, 1.1rem + 1.4vw, 2.1rem);
-  letter-spacing: -0.03em;
-}
-
-.preview-card p {
-  margin: 0;
-  color: var(--muted);
-}
-
-.mock-result {
-  margin-top: 1.5rem;
-  padding: 1.2rem;
-  border-radius: 18px;
-  background: linear-gradient(135deg, rgba(243, 215, 199, 0.7), rgba(143, 184, 168, 0.16));
-  border: 1px solid var(--border);
-}
-
-.mock-label {
-  margin: 0 0 0.4rem !important;
-  font-size: 0.83rem;
-  font-weight: 800;
-  color: var(--accent) !important;
-}
-
-.mock-result strong {
-  display: block;
-  font-size: 1.05rem;
-  margin-bottom: 0.45rem;
-}
-
-.mock-result span {
-  display: block;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-/* ============ Content ============ */
+/* ============ Sections ============ */
 section {
   margin-bottom: var(--space-section);
 }
-
-.content {
-  padding: clamp(1.25rem, 1rem + 2vw, 2rem);
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+section h2 {
+  font-size: clamp(1.3rem, 1rem + 1vw, 1.8rem);
+  margin: 0 0 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+section p {
+  color: var(--muted);
+  font-size: 1.05rem;
 }
 
+/* ============ Content (contents.md 인라인 렌더) ============ */
 .content zero-md {
   display: block;
   color: var(--ink);
   background: transparent;
 }
-
 .content zero-md .markdown-body,
 .content zero-md > div {
   background: transparent !important;
   color: var(--ink);
 }
-
 .content zero-md h1,
 .content zero-md h2 {
-  font-size: clamp(1.35rem, 1rem + 1vw, 1.85rem);
-  font-weight: 800;
+  font-size: clamp(1.3rem, 1rem + 1vw, 1.7rem);
+  font-weight: 700;
   margin: 2.2rem 0 0.8rem;
   color: var(--ink);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
 }
-
 .content zero-md h1:first-child,
 .content zero-md h2:first-child {
   margin-top: 0;
 }
-
 .content zero-md h3 {
-  font-size: 1.12rem;
-  font-weight: 750;
+  font-size: 1.1rem;
+  font-weight: 600;
   margin: 1.4rem 0 0.5rem;
   color: var(--ink);
 }
-
 .content zero-md p {
   font-size: 1rem;
   color: var(--ink);
   margin: 0.5rem 0 1rem;
-  line-height: 1.72;
+  line-height: 1.65;
 }
-
-.content zero-md ul,
-.content zero-md ol {
+.content zero-md ul {
   margin: 0.5rem 0 1rem;
   padding-left: 1.4rem;
   font-size: 1rem;
 }
-
 .content zero-md li {
   margin: 0.35rem 0;
   color: var(--ink);
-  line-height: 1.6;
+  line-height: 1.55;
 }
-
+.content zero-md li input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
 .content zero-md code {
-  background: rgba(143, 184, 168, 0.15);
-  color: var(--accent);
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--accent2);
   padding: 0.15em 0.4em;
-  border-radius: 6px;
+  border-radius: 4px;
   font-family: Menlo, Monaco, 'Courier New', monospace;
-  font-size: 0.9em;
+  font-size: 0.88em;
 }
-
 .content zero-md pre {
   overflow-x: auto;
-  padding: 1rem;
-  border-radius: 14px;
-  background: var(--soft);
+  background: rgba(14, 165, 233, 0.08);
   border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
 }
-
 .content zero-md table {
   border-collapse: collapse;
   width: 100%;
@@ -284,53 +217,66 @@ section {
   font-size: 0.95rem;
   background: transparent;
 }
-
 .content zero-md th,
 .content zero-md td {
   border: 1px solid var(--border);
-  padding: 0.65rem 0.85rem;
+  padding: 0.6rem 0.9rem;
   text-align: left;
   vertical-align: top;
   background: transparent;
 }
-
-/* ============ Comments / Footer ============ */
-.comments {
-  padding: 1.5rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.64);
+.content zero-md th {
+  background: rgba(249, 115, 22, 0.08);
+  font-weight: 600;
 }
-
-.comments h2 {
-  margin: 0 0 0.5rem;
+.content zero-md hr {
+  border: none;
+  height: 0;
+  margin: 2rem 0;
 }
-
-.comments-note {
-  margin: 0 0 1rem;
+.content zero-md blockquote {
+  border-left: 3px solid var(--accent2);
+  margin: 0.8rem 0;
+  padding: 0.4rem 1rem;
   color: var(--muted);
 }
-
-footer {
-  padding: 2rem 0;
-  color: var(--muted);
-  text-align: center;
-  border-top: 1px solid var(--border);
-}
-
-footer a {
-  color: var(--accent);
+.content zero-md strong {
+  color: var(--ink);
   font-weight: 700;
 }
 
-@media (max-width: 560px) {
-  .btn {
-    width: 100%;
-  }
+/* ============ Comments ============ */
+.comments .comments-note {
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem;
+}
+.giscus, .giscus-frame {
+  width: 100%;
+  min-height: 200px;
+}
 
-  .content,
-  .comments,
-  .preview-card {
-    border-radius: 18px;
-  }
+/* ============ Footer ============ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 0 3rem;
+  text-align: center;
+}
+footer p {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+footer a {
+  color: var(--accent2);
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* ============ 모바일 ============ */
+@media (max-width: 480px) {
+  .demo-card { margin-top: -1.5rem; border-radius: 8px; }
+  .cta { padding: 1rem; flex-direction: column; }
+  .btn { justify-content: center; width: 100%; }
 }
