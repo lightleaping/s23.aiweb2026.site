@@ -49,6 +49,8 @@ function App() {
     setLoading(true);
     setResult(null);
 
+    const API_BASE_URL = "https://skyleaping-structured-bloom-api.hf.space";
+
     try {
       const response = await fetch("https://skyleaping-structured-bloom-api.hf.space/analyze", {
         method: "POST",
@@ -68,6 +70,7 @@ function App() {
 
       const data = await response.json();
       setResult(data);
+      
     } catch (error) {
       alert(error.message);
     } finally {
